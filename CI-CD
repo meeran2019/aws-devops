@@ -1,0 +1,30 @@
+
+-------------------------------------------------------------------------------------------------------------------------------
+CI-CD Overview:
+-------------------------------------------------------------------------------------------------------------------------------
+
+Continuos Integration:
+    Push the code to Code commit/ github etc.
+    Once code pushed, build/test server process the code. 
+
+Continuos Delivery/Deployment:
+    Continuos delivery involves manual step. 
+    Continuos deployment is fully automated. 
+
+Code:           AWS Code Commit, Git Hub
+Build & Test:   AWS Code Build , Jenkins, Bamboo 
+Provision:      AWS Elastic Bean Stalk 
+Deploy:         AWS Code Deploy (User managed EC2, On Prem, Lambda, ECS)
+Orchestrate:    AWS Code Pipeline 
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+Code Commit: 
+    It is private fully managed AWS git repository. 
+    It is like Git Hub, Bit bucket.
+    Code is encrypted and store under the account. 
+
+Code Commit - First Repository & HTTPS Configuration:
+    
+
+
