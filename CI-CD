@@ -41,7 +41,61 @@ Code Commit - Clone, Add, Commit, Push:
     git push            -> Push to the repository. During push, asks for username and password. 
 
 Code Commit - Branches and Pull Requests:
-    
+    git checkout -b branch_Name     -> It creates new branch and switch to new branch. 
+    git branch branch_Name          -> Create a new branch. 
+    git checkout branch_Name        -> Switch to new branch. 
+
+    1. Created the new branch and modified with new feature. 
+    2. Create Pull request (Merge) -> Merge the new feature branch to master branch. 
+    3. In create pull request, select source as 'new feature branch' and destination as 'master' branch. 
+    4. If no merge conflicts, will allow to create pull request. 
+    5. From pull request section, Reviewer click 'Merge' to accept pull request. (Here have default option to delete the new-feature branch if required)  
+
+Code Commit - Securing the repository and Branches: 
+    It can be done by creating the policy to explicit deny to secure master branch. 
+    Available in : https://docs.aws.amazon.com/codecommit/latest/userguide/how-to-conditional-branch.html
+    Note: In below policy given for main branch only, Need to add master branch. 
+
+                {
+                "Version": "2012-10-17",
+                "Statement": [
+                    {
+                        "Effect": "Deny",
+                        "Action": [
+                            "codecommit:GitPush",
+                            "codecommit:DeleteBranch",
+                            "codecommit:PutFile",
+                            "codecommit:MergeBranchesByFastForward",
+                            "codecommit:MergeBranchesBySquash",
+                            "codecommit:MergeBranchesByThreeWay",
+                            "codecommit:MergePullRequestByFastForward",
+                            "codecommit:MergePullRequestBySquash",
+                            "codecommit:MergePullRequestByThreeWay"
+                        ],
+                        "Resource": "arn:aws:codecommit:us-east-1:*:*",
+                        "Condition": {
+                            "StringEqualsIfExists": {
+                                "codecommit:References": [
+                                    "refs/heads/main",
+                                    "refs/heads/master"
+                                ]
+                            },
+                            "Null": {
+                                "codecommit:References": "false"
+                            }
+                        }
+                    }
+                ]
+            }
+
+
+    It failed with below error, so not allowing to push to master branch:
+
+        error: remote unpack failed: internal error
+        To https://git-codecommit.us-east-1.amazonaws.com/v1/repos/devops-code-commit-demo
+        ! [remote rejected] master -> master (unpacker error)
+        error: failed to push some refs to 'https://git-codecommit.us-east-1.amazonaws.com/v1/repos/devops-code-commit-demo'
+
 
 
 
