@@ -11,7 +11,7 @@ Continuos Delivery/Deployment:
     Continuos delivery involves manual step. 
     Continuos deployment is fully automated. 
 
-Code:           AWS Code Commit, Git Hub
+Code Repository:AWS Code Commit, Git Hub
 Build & Test:   AWS Code Build , Jenkins, Bamboo 
 Provision:      AWS Elastic Bean Stalk 
 Deploy:         AWS Code Deploy (User managed EC2, On Prem, Lambda, ECS)
@@ -24,7 +24,24 @@ Code Commit:
     It is like Git Hub, Bit bucket.
     Code is encrypted and store under the account. 
 
-Code Commit - First Repository & HTTPS Configuration:
+Code Commit - Create First Repository & HTTPS Configuration:
+    It can be connected through HTTPS & SSH Connection.
+    SSH is not enabled for root account. 
+    Under IAM User -> security credentials -> SSH Keys or HTTPS Git credential for Code Commit. 
+    These credentials are used for push or pull from repository. 
+
+    Code Commit -> Create Repository -> (Repository Name) -> Done. 
+    Code Commit -> Repository -> View Repository 
+    Clone URL gives the repository URL which will copied. 
+
+Code Commit - Clone, Add, Commit, Push:
+    git status          -> Shows status whether tracked or untracked. 
+    git add .           -> Add files to staging area. 
+    git commit -m 'msg' -> Commit the change in local git. 
+    git push            -> Push to the repository. During push, asks for username and password. 
+
+Code Commit - Branches and Pull Requests:
     
+
 
 
