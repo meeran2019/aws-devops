@@ -97,5 +97,30 @@ Code Commit - Securing the repository and Branches:
         error: failed to push some refs to 'https://git-codecommit.us-east-1.amazonaws.com/v1/repos/devops-code-commit-demo'
 
 
+    Code Commit - Triggers and Notifications:
+        Notification - If any process like push, pull etc, it can be notified by using SNS. 
+        Trigger - Same as notification but inaddition to SNS it allows to trigger Lambda. 
+        Cloud watch Event - It can also done here by select source as code commit and target as any like SNS, Lambda etc. 
+
+        Code Commit -> Settings -> Notifications Tab:
+            Name, Events, SNS Target to select. 
+
+        Code Commit -> Settings -> Trigger Tab: 
+            Can select SNS or Lambda. 
+        
+        Event Bridge -> Rules -> Create Rule: 
+            Name, Service Provider, Target 
+    
+    Code Commit - AWS Lambda: 
+        https://docs.aws.amazon.com/codecommit/latest/userguide/how-to-notify-lambda.html
+        
+        1. Created the lambda function with trigger as code commit. 
+        2. If any change in events in code commit, triggered the lambda. 
+        3. Verified in cloud watch logs. 
+
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+
 
 
