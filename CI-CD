@@ -281,5 +281,21 @@ Code Build - Docker, ECR & buildspec.yml file:
     6. After build completed, ECR -> Repositories -> Images. 
 
 
+Code Build - Environmental Variable and Parameter Store:
+    https://docs.aws.amazon.com/codebuild/latest/userguide/build-env-ref-env-vars.html
+    Link has list of environmental variables can use. 
+    printenv in buildspec.yml (under commands) file prints all environmental variables. 
+    environment variables can be given in buildspec file or override in console. 
+    Parameters can be place from Systems Manager Parameter Store or Secrets Manager. 
+
+Code Build - Artifacts & S3: 
+    1. Include the artifacts in buildspec.yaml file. 
+    2. In code build console, update to include the artifacts by giving s3.  
+    3. In code build, start the build. 
+    4. Artifacts created in S3. 
+
+
+
+
 
 
