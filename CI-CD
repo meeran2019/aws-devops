@@ -277,7 +277,7 @@ Code Build - Docker, ECR & buildspec.yml file:
             - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
 
     4. zip myzip.zip Dockerfile buildspec.yml 
-    5. IMAGE_REPO_NAME=ECS Repository Name , IMAGE_TAG=latest version. 
+    5. Use the environemental variables IMAGE_REPO_NAME=ECS Repository Name , IMAGE_TAG=latest version. 
     6. After build completed, ECR -> Repositories -> Images. 
 
 
@@ -293,6 +293,128 @@ Code Build - Artifacts & S3:
     2. In code build console, update to include the artifacts by giving s3.  
     3. In code build, start the build. 
     4. Artifacts created in S3. 
+
+Code Build - Cloud watch Events, Cloudwatch Logs, Cloud watch metrics & Triggers:
+    Code build -> View Projects -> edit -> Logs: 
+        can select the cloudwatch logs and also s3 bucket to store logs. 
+    
+    Cloud watch -> Metrics -> Code build -> Select by Project or Account level. 
+    Metrics can export to dashboard. 
+
+    Cloud watch -> Events -> Rules: (Now changed to Amazon event bridge): 
+        Event bridge -> Name, Event Pattern or Schedule (use cron to run at specific time) -> create Rule. 
+    
+Code Build - Validating code commit Pull Requests: 
+    https://aws.amazon.com/blogs/devops/validating-aws-codecommit-pull-requests-with-aws-codebuild-and-aws-lambda/
+
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+Code Deploy:
+    EC2 or On-prem machine must running code deploy agent. 
+    Agent continuosly polls code deploy for work. 
+    code deploy has appspec.yml file. 
+    Application is pulled from s3 or git hub. 
+    Ec2 instances are group by deployment group. 
+    It can integrate with pipeline. 
+    Blue-Green works only with EC2 (not on-prem) 
+    It support for Lambda, EC2. 
+
+    Code + appspec.yml to S3 <->(Pulled by agent) EC2+agent. So EC2 requires access to read from S3. 
+
+Code Deploy - EC2 Setup: 
+    1. Create EC2 instance with TAGS mandatory. Tags are used by deployment group in code deploy service. 
+    2. Create a service role with S3 access which requires to pull code_appspec.yml file from S3. 
+    3. Install the code deploy agent in EC2. Either after ssh or use in user data field. 
+            sudo yum update -y
+            sudo yum install -y ruby wget
+            wget https://aws-codedeploy-eu-west-1.s3.eu-west-1.amazonaws.com/latest/install
+            chmod +x ./install
+            sudo ./install auto
+            sudo service codedeploy-agent status
+
+Code Deploy - Application, Deployment Groups & FIrst Deployment: 
+    1. Created the role (Allow code deploy to access EC2).
+    2. Created the application. 
+    3. Create the deployment group: 
+            Name, Deployment type (Inplace or Blue green), Deployment Settings (Allatonce, oneatatime, halfatatime)
+    4. Upload the code + appspecfile in zip to S3. 
+            aws deploy push --application-name CodeDeployDemo --s3-location s3://aws-devops-course-stephane/codedeploy-demo/app.zip --ignore-hidden-files --region eu-west-1 --profile aws-devops            
+    5. Create deployment: 
+            s3 bucket location which contain code and then create deployment. 
+
+    Note: TO check whether code deploy agent is properly installed. If not installed, then deploy will timeout with error. 
+
+Code Deploy - Deployment Groups: 
+    Under application, can create multiple deployment group with different tags. 
+    This helps to separate for dev, prod instances. 
+    During deploy, can select the specific deployment group for deployment. 
+
+Code Deploy - Deployment Group Configurations: 
+    Deployment Type: 
+        Inplace - In existing instances, update the applications. 
+        Blue Green  - Create new instances through manually or AutoScaling options. 
+    
+    Deployment Configurations: 
+        AllatOnce, OneataTime, HalfataTime, Manually create deployment configurations. 
+    
+    Loadbalancer: 
+        For blue-green, it is mandatory. 
+        For inplace, it is optional. 
+
+Code Deploy - appspec.yml file: 
+
+    https://docs.aws.amazon.com/codedeploy/latest/userguide/reference-appspec-file.html
+
+    NOte: Since run as root, no need of sudo in scripts. 
+
+    version: 0.0
+    os: linux
+    files:
+    - source: /
+        destination: /var/www/html/WordPress
+    hooks:
+    BeforeInstall:
+        - location: scripts/install_dependencies.sh
+        timeout: 300
+        runas: root
+    AfterInstall:
+        - location: scripts/change_permissions.sh
+        timeout: 300
+        runas: root
+    ApplicationStart:
+        - location: scripts/start_server.sh
+        - location: scripts/create_test_db.shhttps://docs.aws.amazon.com/codedeploy/latest/userguide/reference-appspec-file-structure-hooks.html
+
+    Hooks availabel different for , Inplace, Blue green original & replacement, Lambda  & ECS. 
+    Few environmental variables are available like APPLICATION_NAME, DEPLOYMENT_ID
+    
+    if [ "$DEPLOYMENT_GROUP_NAME" == "Staging" ]
+    then
+        sed -i -e 's/Listen 80/Listen 9090/g' /etc/httpd/conf/httpd.conf
+    fi
+        timeout: 300
+        runas: root
+    ApplicationStop:
+        - location: scripts/stop_server.sh
+        timeout: 300
+        runas: root
+        
+
+Code Deploy - Hooks & Environmental Variables: 
+    https://docs.aws.amazon.com/codedeploy/latest/userguide/reference-appspec-file-structure-hooks.html
+
+    Hooks availabel different for , Inplace, Blue green original & replacement, Lambda  & ECS. 
+    Few environmental variables are available like APPLICATION_NAME, DEPLOYMENT_ID, DEPLOYMENT_GROUP_NAME, DEPLOYMENT_GROUP_ID, LIFECYCLE_EVENT 
+    
+    if [ "$DEPLOYMENT_GROUP_NAME" == "Staging" ]
+    then
+        sed -i -e 's/Listen 80/Listen 9090/g' /etc/httpd/conf/httpd.conf
+    fi
+
+
+
+
 
 
 
