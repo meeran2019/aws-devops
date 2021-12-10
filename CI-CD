@@ -413,6 +413,47 @@ Code Deploy - Hooks & Environmental Variables:
     fi
 
 
+Code Deploy - Cloud watch, Alarm, Trigger:
+    Code Deploy -> Deployment groups -> Advanced Option -> Trigger 
+    Code Deploy -> Deployment groups -> Advanced Option -> Alarm 
+    Event bridge -> Code build -> Target can be any. 
+
+Code Deploy - Rollbacks: 
+    Code Deploy -> Deployment groups -> Advanced Option -> Rollbacks. 
+    1. Rollback when deployment fails. 
+    2. Rollback when alarm threshold are met. (This can use to monitor cpu utiliation, if more than to rollback)
+
+Code Deploy - On Premise Setup: 
+    https://docs.aws.amazon.com/codedeploy/latest/userguide/instances-on-premises.html
+
+    Step 1 – Configure each on-premises instance, register it with CodeDeploy, and then TAG it.
+    Step 2 – Deploy application revisions to the on-premises instance.
+
+    1. use IAM User ARN  for authenticate request. -> Best for smaller instances. 
+    2. use IAM role ARN for authenticate request. -> This is secure and complex. 
+
+Code Deploy - Deploy to Lambda: 
+    https://docs.aws.amazon.com/codedeploy/latest/userguide/applications-create-lambda.html
+
+    hooks: 
+        beforeallowtraffic functionname
+        afterallowtraffic functionname 
+    
+    1. Create a service role for code-deploy for lambda. 
+    2. Create the application. 
+    3. Creaet the deployment group. 
+    4. Deployment type: 
+            allataonce
+            canary - shifts in two increment 
+            linear - shifts in equal increment. 
+    5. Hooks contains beforeallowtraffic & afterallowtraffic. 
+
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+
+    
+
 
 
 
