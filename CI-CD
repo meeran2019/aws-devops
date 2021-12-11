@@ -451,8 +451,80 @@ Code Deploy - Deploy to Lambda:
 
 -------------------------------------------------------------------------------------------------------------------------------
 
+Code Pipeline: 
+    It is CI-CD Orchestrate tool. 
+    Source : S3, Code Commit, ECR, Git hub, Bitbucket. 
+    Build: Code Build, Jenkins
+    Test: 3rd party tools, 
+    Deploy: Code deploy, Cloud formation, Elastic bean stalk, ECS, S3 etc.
 
+    It is made up of stages and each stages have sequential or parallel actions. 
+    Can have manual approval process. 
+    For each stage, generates output artifacts which will pass as input artifacts to next stage. 
+    ATlest 2 stage is mandatory. 
+
+Code Pipeline - Code Commit & Code Deploy: 
+    In source, can select code commit, give the repository and branch details. 
+    Note: Pipeline can created for 1 branch only. 
+    Change detection Options: 
+        Amazon cloudwatch events (recommended and automatically detect changes)
+        AWS Code pipeline  (It periodically checks for changes)
+
+    In code pipeline, can deploy to another region. 
+
+Code Pipeline - Adding Code Build: 
+    Can edit code pipeline. 
+    Stage can be like source, build, test etc 
+    Action group can be parallel or sequential. 
+
+Code Pipeline - Artifacts, Encryption & S3: 
+    Code pipeline -> Advanced setting: 
+    S3: 
+        Default location or Custom Location (recommended)    
+    Key: 
+        Default AWS Managed key or Customer managed key 
+
+Code Pipeline - Manual approval steps:
+    Under pipeline -> edit stage -> Manual approval stage. 
+    Can select SNS topic to send notification. 
     
+Code Pipeline - Cloud watch events integration: 
+    During pipeline creation, it automatically create rules in event bridge. 
+    Also can create our own rule, to choose target. 
+
+Code Pipeline - Stage actions , Sequential & Parallel: 
+    It consists of stages like source, build etc. 
+    Sequential actions -> It process sequentially 
+    Parallel actions -> It process parallel. 
+    runOrder 1 
+    runOrder 2 (It can be multiple and run parallel)
+    runOrder 3 (It run after 2 and multiple can run parallel)
+
+Code Pipeline - All Integrations: 
+    https://docs.aws.amazon.com/codepipeline/latest/userguide/best-practices.html
+
+    Build - Code build -> Generate artifacts 
+    Test - Code build -> Does NOT generate artifacts. 
+
+    Deploy -> Cloud formation (Comman use cases) 
+
+
+Code Pipeline - Custom Action jobs with Lambda: 
+    https://docs.aws.amazon.com/codepipeline/latest/userguide/actions-invoke-lambda-function.html
+
+    1. Created the lambda service role. 
+    2. Created the lambda function. 
+    3. In code pipeline, INvoke a lambda function. 
+
+Code Pipeline - Cloud Formation: 
+    https://docs.aws.amazon.com/codepipeline/latest/userguide/tutorials-cloudformation.html
+
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
 
 
 
