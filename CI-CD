@@ -1,6 +1,6 @@
 
 -------------------------------------------------------------------------------------------------------------------------------
-CI-CD Overview:
+                                CI-CD OVERVIEW
 -------------------------------------------------------------------------------------------------------------------------------
 
 Continuos Integration:
@@ -522,7 +522,61 @@ Code Pipeline - Cloud Formation:
 
 -------------------------------------------------------------------------------------------------------------------------------
 
+Code Star - Overview: 
+    Just upload a project and Code star will create the pipeline automatically which includes code commit, code build, code deploy etc depends upon the project. 
 
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+Jenkins Architecture: 
+    Jenkins is open source CI-CD tool.
+    Can replace code build, deploy, code pipeline. 
+    Must deploy in master slave configuration. 
+    Have jenkinsfile similar to buildspec.yml file. 
+    Jenkins can replace code pipeline or other like code build, code deploy etc. 
+
+Jenkins - Setup on EC2: 
+    #!/bin/bash
+    # setup Jenkins on EC2
+    sudo yum update -y
+    sudo wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat/jenkins.repo
+    sudo rpm --import https://pkg.jenkins.io/redhat/jenkins.io.key
+    sudo yum install java-1.8.0 -y
+    sudo amazon-linux-extras install epel
+    sudo yum install jenkins -y
+    sudo service jenkins start
+
+    sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+
+    ec2-public-ip-address:8080 port 
+
+    
+Jenkis - AWS Plugins: 
+    In Jenkins, have different plugins to integrate with AWS like AWS EC2, Code Pipeline etc. 
+
+White Papers to Read: 
+    Whitepapers to Read
+        At this stage, please have a look at the following whitepapers to better help you in preparing for your certification. You don't need to read everything, just understand the general idea and skim through.
+
+        MUST READ - Blue/Green Deployments on AWS
+        https://d1.awsstatic.com/whitepapers/AWS_Blue_Green_Deployments.pdf
+
+        RECOMMENDED - Practicing Continuous Integration Continuous Delivery on AWS
+        https://d1.awsstatic.com/whitepapers/DevOps/practicing-continuous-integration-continuous-delivery-on-AWS.pdf
+
+        RECOMMENDED - Jenkins on AWS
+        https://d1.awsstatic.com/whitepapers/DevOps/Jenkins_on_AWS.pdf
+
+        OPTIONAL - Introduction to DevOps on AWS
+        https://d1.awsstatic.com/whitepapers/AWS_DevOps.pdf
+
+        OPTIONAL - Development and Test on AWS
+        https://d1.awsstatic.com/whitepapers/aws-development-test-environments.pdf
+
+
+-------------------------------------------------------------------------------------------------------------------------------
+                    CONFIGURATION MANAGEMENT & INFRASTRUCTURE AS CODE
+-------------------------------------------------------------------------------------------------------------------------------
 
 
 
