@@ -1,0 +1,62 @@
+
+Circular Dependancy in Cloud Formation: 
+    https://aws.amazon.com/ko/blogs/infrastructure-and-automation/handling-circular-dependency-errors-in-aws-cloudformation/
+
+Lambda - Inline Function Code: 
+    Simple functions that are written in Node.js or Python can be declared inline in an AWS CloudFormation template, so no zips are necessary. AWS CloudFormation supports a maximum of 4096 characters, so this is viable only for small functions.
+
+    https://aws.amazon.com/cn/blogs/infrastructure-and-automation/deploying-aws-lambda-functions-using-aws-cloudformation-the-portable-way/
+
+IAM Role Access Keys are auto-rotated by AWS on your behalf; you do not need to rotate them.
+
+When a user is trying to detach an EBS volume, the user can either terminate the instance or explicitly remove the volume. It is a recommended practice to unmount the volume first to avoid any file system damage.
+
+Elastic Bean Stalk - Worker node pull from SQS https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/concepts-worker.html
+
+In OpsWorks - Stacks have many layers, Layers have many instances. 
+
+In DynamoDB, Local Secondary Index - Only Sort key can be different from the table. 
+
+ROLLBACK_IN_PROGRESS does not mean CloudFormation failed ג€" it could mean I failed to specify a working solution.
+ROLLBACK_FAILED means CloudFormation failed to carry out a valid operation ג€" rolling back changes it attempted to introduce but could not complete.
+Reference:
+http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updatingstacks.html
+
+In Elastic BeanStalk - Applications have many environments, environments have many deployments.
+
+Global Secondary Key features of DynamoDB - The partition key and sort key can be different from the table.
+
+In ECS, The Force new deployment option is also used when updating a Fargate task to use a more current platform version when you specify LATEST
+
+Using AWS Systems Manager, create an Automation document with values that configure how the machine image should be created. Launch a new pipeline with a custom action in AWS CodePipeline and integrate it with CloudWatch Events to execute the automation document. Build the AMI when the process is triggered. Store the AMI IDs in Systems Manager Parameter Store. 
+
+"detail-type": "CodePipeline Pipeline Execution State Change"
+"detail-type": "CodePipeline Stage Execution State Change"
+"detail-type": "CodePipeline Action Execution State Change"
+
+Create an IAM group for team members and another IAM group for the team leader, both with AWSCodeCommitPowerUser policy attached. Attach another IAM policy to the team members’ group that denies Push, Delete and Merge APIs of CodeCommit on the master branch.
+
+BlockTraffic – During this deployment lifecycle event, internet traffic is blocked from accessing instances that are currently serving traffic. This event is reserved for the CodeDeploy agent and cannot be used to run scripts.
+
+Using AWS OpsWorks Stacks, create a new stack with a custom cookbook and upload the custom recipes to an S3 bucket. Modify the configuration of the custom recipes to point to the S3 bucket. Add a new application layer for a standard Node.js application server. Configure the custom recipe to deploy the application using the S3 bucket. Set up time-based instances and attach an IAM role that provides permission to access the DynamoDB table.
+
+
+Create your validation scripts in AWS Lambda and define them on the AfterAllowTestTraffic lifecycle hook of the AppSpec.yaml file. The functions can validate the deployment using the test traffic and rollback if the tests fail.  -> For lambda, test scripts. 
+
+Produce a Docker image that runs the X-Ray daemon. Upload the image to a Docker image repository, and then deploy it to your Amazon ECS cluster. Configure the network mode settings and port mappings in your task definition file to allow traffic on UDP port 2000.
+
+The AWS X-Ray daemon is a software application that listens for traffic on UDP port 2000, gathers raw segment data, and relays it to the AWS X-Ray API. The daemon works in conjunction with the AWS X-Ray SDKs and must be running so that data sent by the SDKs can reach the X-Ray service.
+
+AWSCodeCommitPowerUser - does not allow them to delete CodeCommit repositories or create or delete repository-related resources in other AWS services, such as Amazon CloudWatch Events. It is recommended to apply this policy to most users.
+
+Immutable environment updates are an alternative to rolling updates. Immutable environment updates ensure that configuration changes that require replacing instances are applied efficiently and safely. If an immutable environment update fails, the rollback process requires only terminating an Auto Scaling group. A failed rolling update, on the other hand, requires performing an additional rolling update to roll back the changes.
+
+Create a CloudWatch Event rule to detect S3 object PUT operations and set the target to the ECS cluster to run a new ECS task. Create another rule that detects S3 DELETE operations. Set the target to a Lambda function that will stop all ECS tasks.
+
+
+
+
+
+
+
+    
