@@ -758,6 +758,41 @@ Cloud Formation - Nested Stacks:
     CAPABILITY_AUTO_EXPAND 
     IAM_CAPABILITY 
 
+Cloud formation - Change Sets: 
+    It helps to verify the change before implement the stack. 
+    Cloudformation -> During create process -> Create change set .
+    After, Under change sets -> Execute to run the stack. 
+
+Cloud Formation - Deletion Policy: 
+    Retain 
+    Snapshot 
+    Delete 
+    DeletionPolicy: Retain
+
+Cloud Formation - Termination Protection: 
+    Cloud Formation -> Creation -> Stack Creation Options -> Termination Protection (Enabled or Disabled)
+
+
+Cloud Formation - Parameters from SSM: 
+
+    Type:   AWS::SSM::Parameter                   -> To create the parameter. 
+    Type:   AWS::SSM::Parameter::Value<String>    -> To get the value         
+            AWS::SSM::Parameter::Value<List<String>>
+            AWS::SSM::Parameter::Value<Any AWS type>
+            'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
+
+
+Cloud Formation - Public Parameters from SSM: 
+    aws ssm get-parameters-by-path --path /aws/service/ami-amazon-linux-latest --query 'Parameters[].Name' 
+    This command helps to get the list of parameters.  Use this in the Default value. 
+
+Cloud Formation - DependsOn: 
+    Resources are created parallely. 
+    DependsOn helps to create dependency between resources. 
+
+Cloud Formation - Deploying Lambda Function: 
+    
+
 
 
 

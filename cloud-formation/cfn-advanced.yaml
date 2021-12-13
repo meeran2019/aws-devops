@@ -3,6 +3,7 @@
 Resources: 
   myEC2:
     Type: AWS::EC2::Instance
+    DeletionPolicy: Delete
     Condition: RegionCond
     CreationPolicy:
       ResourceSignal:

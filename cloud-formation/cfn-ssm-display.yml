@@ -1,0 +1,18 @@
+
+
+Parameters:
+  SSMParameterDisplay:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /param-key/environment
+    Description: get parameter value
+
+Resources:
+  myEC2:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-0ff8a91507f77f867
+      InstanceType: t2.micro
+      Tags: 
+        - Key: !Ref SSMParameterDisplay       #it returned ssm value 
+          Value: !Ref SSMParameterDisplay
+
