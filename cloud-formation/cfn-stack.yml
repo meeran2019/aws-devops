@@ -1,0 +1,12 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  myStackWithParams:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://devops-code-build-image-code-source.s3.amazonaws.com/cfn-stack.yml
+
+
+      
+
+
+

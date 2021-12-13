@@ -1,0 +1,105 @@
+
+
+Resources: 
+  myEC2:
+    Type: AWS::EC2::Instance
+    Condition: RegionCond
+    CreationPolicy:
+      ResourceSignal:
+        Timeout: PT1M
+    Properties: 
+      ImageId: !FindInMap [RegionMap, !Ref AWS::Region, HVM64]
+      KeyName: devops-keypair
+      InstanceType: !Ref InstanceTypeParameter              
+      UserData: !Base64 
+        'Fn::Join':
+          - ''
+          - - |
+              #!/bin/bash -xe
+            - |
+              # Install the files and packages from the metadata
+            - '/opt/aws/bin/cfn-init -v '
+            - '         --stack '
+            - !Ref 'AWS::StackName'
+            - '         --resource myEC2 '    
+            - '         --region '
+            - !Ref 'AWS::Region'
+            - |+
+
+            - |
+              # Signal the status from cfn-init
+            - '/opt/aws/bin/cfn-signal -e $? '
+            - '         --stack '
+            - !Ref 'AWS::StackName'
+            - '         --resource myEC2 '
+            - '         --region '
+            - !Ref 'AWS::Region'
+            - |+
+
+            
+    Metadata: 
+        AWS::CloudFormation::Init: 
+          config: 
+            packages: 
+              yum:
+                httpd: []        
+            commands: 
+              hello:
+                command: "echo hello world"
+            services: 
+              sysvinit:
+                httpd:
+                  enabled: 'true'
+                  ensureRunning: 'true'
+      
+    
+Conditions:
+  RegionCond:
+    !Equals [!Ref RegionParameter, us-east-1]      
+
+Parameters:
+  InstanceTypeParameter:
+    Type: String
+    Default: t2.micro
+    AllowedValues:
+      - t2.micro
+      - t2.nano
+    Description: Enter t2.micro or t2.nano. Default is t2.micro.
+  
+  RegionParameter:
+    Type: String
+    Default: us-east-1
+    Description: Enter the us-east-1 region. 
+
+
+Mappings: 
+  RegionMap: 
+          us-east-1:
+              HVM64: ami-0ff8a91507f77f867
+              HVMG2: ami-0a584ac55a7631c0c
+          us-west-1:
+              HVM64: ami-0bdb828fd58c52235
+              HVMG2: ami-066ee5fd4a9ef77f1
+          eu-west-1:
+              HVM64: ami-047bb4163c506cd98
+              HVMG2: ami-0a7c483d527806435
+          ap-northeast-1:
+              HVM64: ami-06cd52961ce9f0d85
+              HVMG2: ami-053cdd503598e4a9d
+          ap-southeast-1:
+              HVM64: ami-08569b978cc4dfa10
+              HVMG2: ami-0be9df32ae9f92309
+      
+Outputs: 
+  Outputdisplayavailabilityzone: 
+    Condition: RegionCond
+    Description: Output value description
+    Value:  !GetAtt myEC2.AvailabilityZone
+    Export: 
+      Name: Availability-zone
+  Outputdisplayinstanceid: 
+    Condition: RegionCond
+    Description: Output value description
+    Value:  !Ref myEC2
+    Export: 
+      Name: Instance-ID 

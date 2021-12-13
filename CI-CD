@@ -578,8 +578,185 @@ White Papers to Read:
                     CONFIGURATION MANAGEMENT & INFRASTRUCTURE AS CODE
 -------------------------------------------------------------------------------------------------------------------------------
 
+Cloud Formation: 
+    Infrastructure as code 
+    version control 
+    Cant modify the existing stack. Can reupload again. 
+
+Cloud Formation - Status: 
+    CREATE_IN_PROGRESS 
+    CREATE_COMPLETE 
+    UPDATE_IN_PROGRESS
+    UPDATE_COMPLETE
+    DELETE_IN_PROGRESS
+    DELETE_COMPLETE
 
 
+Cloud Formation - Create stacks hands on: 
+
+    Cloudformation -> create stack -> S3 URL or Upload template. 
+    Tags - Apply to the underlying resources. 
+    Permissions - policy 
+    Stack Failure - Roll back or Preserve. 
+    Stack Policy - Defines the resources that want to protect from unintentional updates. 
+    Timeout 
+    Notifications 
+    Termination protection 
+
+    Estimate cost option. 
+
+
+Cloud Formation - Update and Delete Stack: 
+    Modify allow to upload new template or replaceexisting template. 
+    Delting the stack, delete the underlying resources. 
+
+Cloud Formation Parameters: 
+    Parameters help to input custom values to stack. Some inputs cannot be determine at ahead of time. 
+
+    Pseudo parameter are used to get the default values:  It refer by using !Ref AWS:AccountId 
+        AWS::AccountId 
+        AWS::NotificationARNs 
+        AWS::NoValue 
+        AWS::Region 
+        AWS::StackId 
+        AWS::StackName 
+
+    Parameters:
+        InstanceTypeParameter:
+            Type: String
+            Default: t2.micro
+            AllowedValues:
+            - t2.micro
+            - m1.small
+            - m1.large
+            Description: Enter t2.micro, m1.small, or m1.large. Default is t2.micro.
+            
+Cloud Formation Resources: 
+
+    It helps to create the resources. 
+    AWS::aws-product-name::data-type-name 
+
+    Resources: 
+        myEC2:
+            Type: AWS::EC2::Instance
+            Properties: 
+            ImageId: 'ami-0ed9277fb7eb570c9'
+            InstanceType: !Ref InstanceTypeParameter
+
+    Can create dynamic resource: 
+        No, cannot generate. Everything has to be declared. 
+    
+    Is every AWS service supported: 
+        Almost. For unavailable can use Lambda custom resources. 
+
+Cloud Formation Mappings: 
+    Used for known value in advance. 
+    It is key value pair based. 
+
+    !FindInMap[map_name, top_level_key, 2nd_level_key]      -> To retrieve the values from map. 
+
+    Mappings: 
+        Mapping01: 
+            Key01: 
+            Name: Value01
+            Key02: 
+            Name: Value02
+            Key03: 
+            Name: Value03
+            
+    RegionMap: 
+        us-east-1:
+            HVM64: ami-0ff8a91507f77f867
+            HVMG2: ami-0a584ac55a7631c0c
+        us-west-1:
+            HVM64: ami-0bdb828fd58c52235
+            HVMG2: ami-066ee5fd4a9ef77f1
+        eu-west-1:
+            HVM64: ami-047bb4163c506cd98
+            HVMG2: ami-0a7c483d527806435
+        ap-northeast-1:
+            HVM64: ami-06cd52961ce9f0d85
+            HVMG2: ami-053cdd503598e4a9d
+        ap-southeast-1:
+            HVM64: ami-08569b978cc4dfa10
+            HVMG2: ami-0be9df32ae9f92309
+                
+
+Cloud Formation - Outputs: 
+    If output is export (export name), then can import in another stack. (!importvalue export-name) 
+    It enables cross stack. 
+    Cant delete a stack if output is references in another stack. 
+
+    Outputs: 
+        Outputdisplayavailabilityzone: 
+            Description: Output value description
+            Value:  !GetAtt myEC2.AvailabilityZone
+            Export: 
+            Name: Availability-zone
+        Outputdisplayinstanceid: 
+            Description: Output value description
+            Value:  !Ref myEC2
+            Export: 
+            Name: Instance-ID 
+
+Cloud Formation - Conditions: 
+    Can define the condition, if condition is true then only resource or output can be created. 
+    Condition can reference another condition, parameter value or mapping. 
+
+Cloud Formation Intrinsic Functions: 
+        Fn::And
+        Fn::Equals
+        Fn::If
+        Fn::Not
+        Fn::Or
+    Fn::Base64 -> returns base64 representation of input string. used to pass user data. 
+    Fn::Ref or  !Ref   -> In resources, reference the resource ID. In parameters, references the value. 
+    Fn:GetAtt or !GetAtt -> To get the attributes of the resources. 
+    Fn::FindInMap or !FindInMap -> !FindInMap [map-name, top-key, 2nd-key]
+    Fn::Join -> !Join [delimeter, [list of values ]]
+    Fn::Sub ->  substutute 
+
+Cloud Formation - User data: 
+    It must be under Fn::Base64 
+    User data is stored under /var/log/cloud-init log or /var/log/cloud-init-output.log 
+
+          UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash -xe
+          yum update -y 
+          yum install cloud-init -y
+          yum install httpd -y
+
+Cloud Formation - cfn-init: 
+    AWS::CloudFormation::Init must be in METADATA of a RESOURCE.
+    It helps to make complex configuration readable. 
+    EC2 instance query the cloudformation template to get the init data. 
+    Logs captured in /var/log/cfn-init logs. 
+
+Cloud Formation - cfn signal and wait conditions: 
+    After cfn-init, still dont know whether ec2 metadata are properly installed or not. 
+    for this, cfn-signal is used to tell cloudformation stack about the success. 
+    Need to define WaitCondition, it blocks template from process and wait for signal. 
+    cfn-signal to process followed by cfn-init. 
+
+Cloud Formation - wait signal trouble shoot: 
+    cfn init helper script not installed. 
+    check the /var/log/cloud-init.log or cfn-init.log 
+    disable rollback on failure to check the logs. 
+    verify has internet connection. 
+
+Cloud Formation - rollbacks: 
+    During stack creation -> Stack failure options: 
+        1. Rollback all stack resources. 
+        2. Preserve successfully provisioned resources. 
+
+Cloud Formation - Nested Stacks: 
+    Nested stacks are stacks are created separately and referenced in stack. 
+    As code grows and separate stacks for network, server, database etc. reference the stack with in another stack. 
+
+    AWS::CloudFormation::Stack 
+    CAPABILITY_AUTO_EXPAND 
+    IAM_CAPABILITY 
 
 
 
