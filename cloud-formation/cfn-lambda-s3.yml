@@ -1,0 +1,26 @@
+
+Resources:
+  CfnLambdaCreate:
+    Type: AWS::Lambda::Function
+    Properties: 
+      Code: 
+        S3Bucket: devops-code-build-image-code-source
+        S3Key: lambda-code.zip
+        S3ObjectVersion: 1h7DdqYOrlDV_wx0lpY6LHr7oihfxlcA
+      Description: create a lambda function    
+      FunctionName: cfn-lambda-create      
+      Handler: index.lambda_handler
+      Role: !GetAtt CfnLambdaRole.Arn 
+      Runtime: python3.9      
+      Timeout: 60
+  
+  CfnLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: CfnLambdaRole
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole              
