@@ -591,7 +591,7 @@ Cloud Formation - Status:
     UPDATE_COMPLETE
     UPDATE_COMPLETE_CLEANUP_IN_PROGRESS 
     UPDATE_ROLLBACK_COMPLETE
-    UPDATE_ROLLBACK_FAILED 
+    UPDATE_ROLLBACK_FAILED  -> it is important 
     DELETE_IN_PROGRESS
     DELETE_COMPLETE
     DELETE_FAILED
@@ -615,7 +615,7 @@ Cloud Formation - Create stacks hands on:
 
 
 Cloud Formation - Update and Delete Stack: 
-    Modify allow to upload new template or replaceexisting template. 
+    Modify allow to upload new template or replace existing template. 
     Delting the stack, delete the underlying resources. 
 
 Cloud Formation Parameters: 
@@ -666,11 +666,11 @@ Cloud Formation Mappings:
     Mappings: 
         Mapping01: 
             Key01: 
-            Name: Value01
+              Name: Value01
             Key02: 
-            Name: Value02
+              Name: Value02
             Key03: 
-            Name: Value03
+              Name: Value03
             
     RegionMap: 
         us-east-1:
@@ -722,18 +722,18 @@ Cloud Formation Intrinsic Functions:
     Fn:GetAtt or !GetAtt -> To get the attributes of the resources. 
     Fn::FindInMap or !FindInMap -> !FindInMap [map-name, top-key, 2nd-key]
     Fn::Join -> !Join [delimeter, [list of values ]]
-    Fn::Sub ->  substutute 
+    Fn::Sub ->  substitute 
 
 Cloud Formation - User data: 
     It must be under Fn::Base64 
     User data is stored under /var/log/cloud-init log or /var/log/cloud-init-output.log 
 
           UserData:
-        Fn::Base64: !Sub |
-          #!/bin/bash -xe
-          yum update -y 
-          yum install cloud-init -y
-          yum install httpd -y
+            Fn::Base64: !Sub |
+                #!/bin/bash -xe
+                yum update -y 
+                yum install cloud-init -y
+                yum install httpd -y
 
 Cloud Formation - cfn-init: 
     AWS::CloudFormation::Init must be in METADATA of a RESOURCE.
@@ -826,7 +826,7 @@ Cloud Formation - Custom Resources:
         To use a custom resource in a CloudFormation stack, you need to create a resource of either type AWS::CloudFormation::CustomResource or Custom::<YourName>. 
         ServiceToken: ARN of Lambda function. 
 
-        Cloudformation runs logic at anytime during create , update and delete stacks. 
+        Cloudformation runs logic at anytime during create, update and delete stacks. 
 
 
 Cloud Formation - Drift Detection: 
@@ -853,7 +853,46 @@ Cloud Formation - Stack Policies:
 -------------------------------------------------------------------------------------------------------------------------------
 
 Elastic Bean Stalk: 
+    It is easy to use for deploying and scaling web applications. 
+    Simply upload the code and EBS automatically handles the deployment, load balancing, auto scaling to health monitoring. 
+    No charge for EBS but only for underlying resources. 
+
+Console Process:     
+    Applications: 
+        1. Create Application: 
+            Name, Platform, Application (sample or upload own code)
+    Environments: 
+        Web server environment 
+        Worker environment 
+      
+    Change History: 
+
+Elastic Beanstalk - CLI: 
+    https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-install-advanced.html   -> To run manually eb 
+
+    https://github.com/aws/aws-elastic-beanstalk-cli-setup -> Execute scripts to install eb 
+
+    Initialize EB CLI Project: 
+        eb init         -> Initialize new project (give application name, platform)
+        eb create       -> To create the environment. 
+        eb status       -> To see the current status of environment. 
+        eb health       -> To check the health information of instance in environment. 
+        eb events       -> List of events output in EB. 
+        eb logs         -> To pull the logs from instance in environment. 
+        eb open         -> To open environment website in browser. 
+        eb deploy       -> To deploy the application in environment. 
+        eb config       -> to check the configuration details. 
+        eb terminate    -> terminate the environment 
     
+Elastic Beanstalk - Saved Configurations: 
+    Save configuration helps to save the environment configuration details and later use the configuration to CREATE the new environment or LOAD to existing environment. 
+
+    https://aws.amazon.com/blogs/devops/using-the-elastic-beanstalk-eb-cli-to-create-manage-and-share-environment-configuration/
+
+    Environment -> Actions -> Save Configuration. 
+
+    eb config save environment-name --cfg config-name 
+
 
 
 
