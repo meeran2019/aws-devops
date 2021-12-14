@@ -586,10 +586,18 @@ Cloud Formation:
 Cloud Formation - Status: 
     CREATE_IN_PROGRESS 
     CREATE_COMPLETE 
+    CREATE_FAILED
     UPDATE_IN_PROGRESS
     UPDATE_COMPLETE
+    UPDATE_COMPLETE_CLEANUP_IN_PROGRESS 
+    UPDATE_ROLLBACK_COMPLETE
+    UPDATE_ROLLBACK_FAILED 
     DELETE_IN_PROGRESS
     DELETE_COMPLETE
+    DELETE_FAILED
+    ROLLBACK_IN_PROGRESS 
+    ROLLBACK_COMPLETE 
+    ROLLBACK_FAILED 
 
 
 Cloud Formation - Create stacks hands on: 
@@ -791,10 +799,61 @@ Cloud Formation - DependsOn:
     DependsOn helps to create dependency between resources. 
 
 Cloud Formation - Deploying Lambda Function: 
+    Role ARN is required. 
+    handler - index.handler_name 
+    In lambda, 4000 characters have inline. Only node.js and python allowed as inline. 
+    CAPABILITY_IAM is required when create the IAM role. 
+
+    To get the source from S3 bucket: 
+        place the code in index.py file and zipped to s3 bucket. 
+              Code: 
+                S3Bucket: devops-code-build-image-code-source
+                S3Key: lambda-code.zip
+                S3ObjectVersion: pXPqiF6GWRdBg3TKjZlHoNhCTKcB7qHh
+
+Cloud Formation - Custom Resources: 
+    Custom resources used in below scenarios: 
+        1. Provisioning AWS resources that are not supported in cloud formation. 
+        2. Provisioning non AWS Resources. 
+        3. Perform provisioning steps not related to infrasture. 
+                ex: initialize the database. 
     
+    It consists of: 
+        1. Create the logic for custom resources. 
+        2. Deploy the custom resource to Lambda function. 
+        3. Use the custom resource in cloud formation template that references lambda function or SNS topic. 
+        
+        To use a custom resource in a CloudFormation stack, you need to create a resource of either type AWS::CloudFormation::CustomResource or Custom::<YourName>. 
+        ServiceToken: ARN of Lambda function. 
+
+        Cloudformation runs logic at anytime during create , update and delete stacks. 
 
 
+Cloud Formation - Drift Detection: 
+    Cloudformation -> Stack actions -> Detect drift 
+    Cloudformation -> Stack actions -> View drift results 
 
+    If any change in cloudformation template and actual infrastructure. then capture in drift detection. 
+
+Cloud Formation - Insufficient Capabilities Exception: 
+    CAPABILITY_IAM or CAPABILITY_NAMED_IAM (for custom resources) -> To create IAM resources.  (InsufficientCApabilitiesException)
+    CAPABILITY_AUTO_EXPAND -> For nested stack. 
+
+Cloud Formation - cfn hup and metadata: 
+    If any change in metadata, cfn-hub will detect the metadata changes with default interval of 15 mins and run the cloudformation::init metadata again. 
+    /etc/cfn/cfn-hup.conf 
+    /etc/cfn/hooks.d/cfn-auto-reloader.conf 
+
+Cloud Formation - Stack Policies: 
+    It provides fail safe mechanism to prevent accidental deletion. 
+    It helps to prevent update or delee through stack policy. 
+    It allow to update but during process failed with error "Action denied by stack policy: Statement [#1] does not allow [Update:*] for resource [*];"
+
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+Elastic Bean Stalk: 
+    
 
 
 
