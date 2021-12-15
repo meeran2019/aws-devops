@@ -981,6 +981,44 @@ Elastic Beanstalk - Multi Docker Integration:
 
 -------------------------------------------------------------------------------------------------------------------------------
 
+
+Lambda: 
+    This is serverless. 
+    Default create outside of VPC but can tag to VPC. 
+    It has monitoring. 
+
+Lambda - Sources and Use cases: 
+    Source trigger can be API gateway, Cloud watch events, Alexa, Load balancer , Code commit, dynamodb, s3, kinesis etc. 
+
+Lambda - Security, Environmental variables, KMS and SSM: 
+    It support secrets managers, parameter store, environmental variables 
+
+Lambda - Versions, Aliases and Canary Routing: 
+    When work on lambda, $LATEST -> Mutable. 
+    Version (code + configuration)  - Immutable. 
+    $LATEST (mutable) -> Version V1 (immutable)
+    Alias are pointers which point to versions and mutable. 
+    Alias enabled blue green deployment by shifting the traffic to versions. 
+
+Lambda - SAM Framework: 
+    Serverless Application Model (SAM) is CLI tool helps to create and manage serverless service. 
+    sam init        -> Initialize new project. 
+    sam build       -> Build the project 
+    sam package     -> Package the project. 
+    sam deploy      -> Deploy the application. 
+
+    SAM comes with build in Code Deploy to deploy the appliations. 
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+Step Functions: 
+    It helps to create workflow. 
+    State machine defined using amazon state language. 
+    It runs upto one year. 
+
+
+-------------------------------------------------------------------------------------------------------------------------------
+
   
   
 
