@@ -1019,7 +1019,62 @@ Step Functions:
 
 -------------------------------------------------------------------------------------------------------------------------------
 
-  
+API Gateway: 
+    It supports HTTP, REst API, WebSockets. 
+    Act as front door. 
+    It integrate with Lambda, Mock, Other AWS Services. 
+
+    Endpoint Type : Regional, Edge Optimized Endpoint (edge location), Private (with vpc)
+
+    Actions -> Create MEthods (GET, PUT etc )
+
+    Integration Type: 
+        Lambda Function 
+        HTTP 
+        Mock 
+        AWS Service 
+        VPC Link 
+
+        Method Request/Method Response , Integration Request/Integration Response
+
+        Deploy API -> Deploy to Stages 
+    
+    API Keys -> Create API Keys. 
+
+    Authenticator - Using Cognito user Pools or Lambda authorizer. 
+
+API Gateway - Integration with Lambda: 
+    If proxy is enabled: 
+        Lambda_Proxy -> Entire request passed to Lambda. 
+            Modification is not allowed in Integration request. 
+        
+    Function_name = function_name:alias/version   (Can give alias or version in function name)
+    Mapping template - It helps to modify the content of the request sent to function or return from function. 
+
+API Gateway - Stages & Deployment: 
+    Requires deployment for changes to effect. 
+    Can create multiple stages. Each having their own stage variable (environment variable). 
+
+API Gateway - Canary Deployments: 
+    Can enable canary deployment for any stage. 
+    Choose % of traffic that canary receives. 
+    Promote Canary is used to deploy canary. 
+
+    API Gateway -> Stages -> Canary -> Create canary. 
+    Once canary created, then showing the stages with Canary options. 
+
+API Gateway - Throttles: 
+    10,000 request per second. 
+    Usage Plan (Gives the request) -> Associate key with usage. 
+
+API Gateway - Fronting Step Functions: 
+    API Gateway -> AWS Services (Step Functions)
+
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+
+
   
 
 
