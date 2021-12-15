@@ -891,9 +891,95 @@ Elastic Beanstalk - Saved Configurations:
 
     Environment -> Actions -> Save Configuration. 
 
-    eb config save environment-name --cfg config-name 
+    eb config save environment-name --cfg config-name   -> Save the current config of environment. 
+    eb setenv ENABLE_COOL_NEW_FEATURE=true              -> Set the new config in current environment. 
+    eb config --cfg config-name                         -> Update the config to the envionment. 
+
+Elastic Beanstalk - .ebextensions for configs: 
+    Under .ebextensions -> name.config file. 
+    option_settings key used to modify EB configuration and define variables that can be retrieved from application using environemental variables. 
+
+    option_settings:
+        - namespace:  namespace
+            option_name:  option name
+            value:  option value
+        - namespace:  namespace
+            option_name:  option name
+            value:  option value
+            
+    namespace is optional. 
+
+    Precedence: 
+        https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-options.html
+
+        Default Value -> Configuration file (.ebextensions/name.confg) -> saved configuration -> Setting applied during creation/update thorugh console, CLI, SDK. 
+
+Elastic Beanstalk - .ebextensions for Resources: 
+    Under .ebextensions -> name.config file. 
+    Can define the cloudformation template to create resources as part of elastic beanstalk. 
+
+Elastic Beanstalk - RDS in or out of environment: 
+    If RDS is part of EB, then will be deleted. 
+    To Overcome: 
+        1. Create external table. 
+        2. Under EB Configuration -> Use key and value with dynamodb table name. 
+
+Elastic Beanstalk - .ebextions for commands and containers: 
+    commands: 
+        run on instance before application setup. 
+    container_commands: 
+        It helps to modify source code. 
+        It runs after application code is extracted and before the application  version deploy. 
+        It run after application is setup. 
+        database_migration: 
+            leader_only: true -> to run only on single instance with leader only. 
+            
+Elastic Beanstalk - Good Features to know: 
+    CLone Environment - To duplicate the environment. 
+    Rebuild Environment - TO delete and recreate the environment. 
+    Application -> Settings -> Application version lifecycle settings -> TO limit the no of versions for future deployments. 
+
+Elastic Beanstalk- Rolling update strategy: 
+    Environment -> COnfiguration -> Rolling updates and deployment. 
+        Deployment Policy: 
+            All at once -> Deploy all in one go. Fastest deployment. Downtime. No additional cost. 
+            Rolling  -> update few instance at a time. Run below capacity. 
+            Rolling with additional batch  -> Few additional instances. Run at capacity, small additional cost. Longer deploy. 
+            Immutable   -> Temporary ASG is created. Higher cost. Longest deploy. Quick rollback. 
+            Traffic Splitting 
+
+            SWAP URL is used to shift traffic between environment. 
+
+    https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/using-features.rolling-version-deploy.html?icmpid=docs_elasticbeanstalk_console
+
+    Deployment Modes: 
+        Single Instance   -> Have single instance and good for dev. 
+        High Availability -> Have load balancer and good for prod. 
+    
+Elastic Beanstalk - Rolling updates hands on: 
+    Environment -> COnfiguration -> Rolling updates and deployment. :
+        Application Deployments & Configuration updates. 
+
+Elastic Beanstalk - SWAP URL: 
+    Requires 2 environment and swap the URL between the environment. 
+    1. Used clone option to created the similar environment. 
+    2. Updated the source code. 
+    3. eb deploy environment-name (to deploy the application to new environment)
+
+    Environment -> Actions -> SWAP URL -> Select environment to swap. 
+
+Elastic Beanstalk - Worker Environment: 
+    For long running workloads or schedule using cron.yml 
+    It polls from SQS. 
+
+Elastic Beanstalk - Multi Docker Integration: 
+    To create environment for docker: 
+        Docker  -> Single container 
+        Multi Container Docker: 
+            Dockerrun.aws.json file -> Configuration file . 
 
 
+-------------------------------------------------------------------------------------------------------------------------------
 
 
 
