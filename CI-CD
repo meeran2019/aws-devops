@@ -1073,9 +1073,125 @@ API Gateway - Fronting Step Functions:
 
 -------------------------------------------------------------------------------------------------------------------------------
 
+ECS (Elastic Container Service):
+
+Docker: 
+    It is used to deploy apps. 
+    Package apps in containers which run on any OS under the hood used Linux. 
+    Docker images are stored in Docker Repositories like Docker hub (publlic), ECR (private).
+    Docker used docker daemon engine to run the images (container) on same server. 
+    Dockerfile used to create docker image. 
+
+    docker build    -> Build image fromDockerfile 
+    docker run      -> Run the container 
+    docker push     -> Push to docker hub 
+    docker pull     -> Pull from docker image
+
+    It consists of: 
+        ECS 
+        Fargate 
+        EKS 
+
+ECS Clusters: 
+    It is logical grouping of EC2 instances. 
+    EC2 instances run the ECS agent (Docker Container) 
+    ECS agent register the instance to clusters. 
+
+    ECS -> Clusters -> Create Cluster: 
+        Cluster Template: 
+            Networking only (Fargate) 
+            EC2 Linux + Networking 
+            EC2 Windows + Networking 
+
+    Under etc/ecs/ecs.config file: ECS_CLUSTER is used to register the instance to cluster. 
+    cat /etc/ecs/ecs.config 
+    ECS_CLUSTER=ecs-cluster-demo
+    ECS_BACKEND_HOST=
+    ECS Instances under the cluster. 
+
+    It create the instance as Auto scaling group. If require to modify the instances, can change in auto scaling group. 
 
 
-  
+ECS Task Definition: 
+    It contains metadata in json format which tells ECS how to run container. 
+    It contains crucial information around: 
+        Image name 
+        Port binding for container and hosts. 
+        Memory and CPU required. 
+        Environment variables. 
+        Networking Information. 
 
+        Task Role is required to perform the tasks. 
+
+        Container Definitions: 
+            Image, port 
+
+        ECS -> Task Definition -> EC2 -> 
+            Task Role - Optional IAM role that tasks can use to make API requests to authorized AWS services. Create an Amazon Elastic Container Service Task Role.
+            Task execution role - This role is required by tasks to pull container images and publish container logs to Amazon CloudWatch on your behalf.
+        
+
+ECS Service: 
+    It define how many tasks to run and how to run. 
+
+    Deployment Type: ROlling update & Blue greem powered by code deploy. 
+    Task Placement: 
+        AZ Balanced Spread 
+        AZ Balanced Bin pack 
+        BinPack 
+        One Task Per host 
+        Custom 
+
+    ECS -> Cluster -> Services -> Create -> 
+
+
+ECS Service with Load Balancers: 
+    Application Load Balancer - Dynamic port forwarding - Allows to route to dynamic port. 
+    Under Services -> ALB 
+
+
+ECR Part 1:
+    ECR is private docker image repository. 
+    $(aws ecr get-login --no-include-email region us-east-1) 
+    docker push 
+    docker pull 
+
+ECR Part 2: 
+    Here updated the container image with private repository image. 
+
+
+FARGATE: 
+    In EC2 , requires to create cluster. 
+    In fargate, no need of cluster which is serverless. 
+
+
+ECS & Multi Docker beanstalk: 
+    Elastic Beanstalk: 
+        Single container    -> Run EC2 
+        Multi Container     -> Run ECS 
+    
+    Requires Dockerrun.aws.json file under root of source code. 
+
+ECS- IAM Roles: 
+    ecsInstanceRole -> EC2 Instances for ECS Instances. 
+    TaskRole -> Optional IAM role that tasks can use to make API requests to authorized AWS services. Create an Amazon Elastic Container Service Task Role.
+    Task execution role - This role is required by tasks to pull container images and publish container logs to Amazon CloudWatch on your behalf.
+
+ECS - AutoScaling: 
+    Service -> COnfigure Auto Scaling. 
+    Requires 2 auto scaling for ECS instances and Container instances. 
+
+ECS - Cloud Watch Integrations: 
+    Container Definition -> Integrate to cloud. -> Helps container send the log to cloud watch directly. 
+    For ECS instances, install cloud watch log agent in ecs instances. 
+
+ECS - Code Pipeline - CICD: 
+    ecsworkshop.com 
+
+
+------------------------------------------------------------------------------------------------------------------------------
+
+OpsWorks: 
+    
 
 
