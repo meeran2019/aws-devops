@@ -1192,6 +1192,42 @@ ECS - Code Pipeline - CICD:
 ------------------------------------------------------------------------------------------------------------------------------
 
 OpsWorks: 
+    It is configuration management with Chef and Puppet. 
+    It helps to build highly dynamic application and propagate changes instantly. 
+    It consists of: 
+        OpsWorks Stacks -> Define, group, provision and operate application in AWS by using chef in local mode.
+        OpsWorks for Chef Automate -> Create chef servers and use chef tooling to automate them. 
+        OpsWork for Puppet Enterprise -> Create puppet server which monitor the infrastructure. 
     
+    Stack is a set of layers, instances and related AWS resources whose configuration want to manage together. 
 
+    Ops Work Stacks -> Stacks ->  Create Stack. 
+
+    A layer is a blueprint for a set of Amazon EC2 instances. It specifies the instance's settings, associated resources, installed packages, profiles, and security groups. You can also add recipes to lifecycle events of your instances, for example: to set up, deploy, configure your instances, or discover your resources.
+
+    Opsworks stack: 
+        Elastic Loadbalancing Layer 
+        Application server layer  -> Cookbook repository is used to provision. 
+        Amazon RDS layer 
+    
+    Layers: 
+        Auto healing enabled : yes 
+
+    Instances: 
+        Time based -> can select the time/schedule when to run. 
+        Load based -> runs based on the load. 
+        24/7  -> runs 24/7 
+
+Life cycle events: 
+    Setup       -> After instance startup and booting. 
+    Configure   -> It occurs on ALL of instances. An instance enters or leaves online, Associate or Disassocite elastic IP address, Attach or Detach ELB from instance. 
+    Deploy      -> It occurs when run deploy command. to deploy the application. 
+    Undeploy    -> To remove the app from instances. 
+    Shutdown    -> Shutdown happens before terminating. 
+
+Auto healing & Cloud watch events: 
+    If any failure, it will recreate the instances. 
+
+    
+------------------------------------------------------------------------------------------------------------------------------
 
