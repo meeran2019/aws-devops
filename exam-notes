@@ -53,6 +53,13 @@ Immutable environment updates are an alternative to rolling updates. Immutable e
 
 Create a CloudWatch Event rule to detect S3 object PUT operations and set the target to the ECS cluster to run a new ECS task. Create another rule that detects S3 DELETE operations. Set the target to a Lambda function that will stop all ECS tasks.
 
+Amazon EC2 instances configured for Systems Manager are also described as managed instances. In the console, however, the IDs of your hybrid instances are distinguished from Amazon EC2 instances with the prefix “mi-“. Amazon EC2 instance IDs use the prefix “i-“.
+
+AWS Application Discovery Service helps you plan your migration to the AWS cloud by collecting usage and configuration data about your on-premises servers. Application Discovery Service is integrated with AWS Migration Hub, which simplifies your migration tracking. After performing discovery, you can view the discovered servers, group them into applications, and then track the migration status of each application from the Migration Hub console. The discovered data can be exported for analysis in Microsoft Excel or AWS analysis tools such as Amazon Athena and Amazon QuickSight.
+
+Guard Duty is THREAT detection service. 
+Inspector for VULNERABILITIES. 
+
 
 
 

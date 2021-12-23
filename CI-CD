@@ -1,7 +1,7 @@
 
--------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
                                 CI-CD OVERVIEW
--------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
 
 Continuos Integration:
     Push the code to Code commit/ github etc.
@@ -1228,6 +1228,195 @@ Life cycle events:
 Auto healing & Cloud watch events: 
     If any failure, it will recreate the instances. 
 
-    
+
 ------------------------------------------------------------------------------------------------------------------------------
+                                MONITORING AND LOGGING
+------------------------------------------------------------------------------------------------------------------------------
+
+Cloud Trail: 
+    It continuosly logs AWS accounts activity. 
+    It tracks API call details. 
+    It send to S3 bucket, SNS Notification or Send to Cloudwatch logs. 
+
+    Cloud Trail -> Name, S3 bucket, 
+        Log file validation - To verify whether log file modified/deleted. 
+        SNS Notification delivery -> To notify in SNS for each log delivered. 
+        Event Type: 
+            Management Events -> Capture management operations performed on AWS resources. 
+            Data Events -> Log the resource operations performed on/with in resources. 
+            Insight Events -> Identity unusual activity, errors or user behaviour. 
+
+Cloud Trail - Log Integrity: 
+    Log file validation - To verify whether log file modified/deleted. 
+    aws cloud-trail validate logs -> Command 
+    Digest file deliver every 1 hour and then run the validate log command. 
+
+Cloud Trail - Cross Account Logging: 
+    To allow multiple account to send cloud trail logs to S3 bucket. 
+        1. Requires to update the S# bucket policy to allow other account. 
+        2. In other accounts, choose existing bucket name which created in another account. 
+
+------------------------------------------------------------------------------------------------------------------------------
+
+Kinesis - Data Streams Overview: 
+    It is alternative to apache kafka. 
+    It is used for real time stream. 
+    It consists of: 
+        Kinesis stream      -> Low latency streaming ingest atscale. 
+        Kinesis Analytics   -> Perform real time analytics on stream. 
+        Kinesis Firehose    -> Load streams into S3, Redshift, Elasticsearch 
+
+        Producers -> SHARDS -> Consumers
+    Multiple application can consume the same stream. 
+    Data retention is 1 day upto 7 days. 
+    Records are ordered per shard. 
+    Producer: 
+        It consists of Record Key and Data blob and sequence nbr. 
+        1 mb/s or 1000 messages per second write. 
+    Consumer: 
+        2 mb/s read. 
+        5 api calls per second per shard. 
+    
+    Kinesis SDK, Agent, Cloud Watch Logs -> Kinesis Stream 
+    AWS Kinesis KCL: (Kinesis Client Library): 
+        It uses dynamodb to checkpoint offsets. 
+        It uses dynamodb to track other workers and share work amoing shards. 
+        great for reading in distributed manner. 
+    
+Kinesis Alalytics & Firehose: 
+    Firehose: 
+        It is fully managed and in near real time (60 sec latency)
+        It loads data to S3, Redshift, Splunk, ELasticsearch. 
+        Data transformation through AWS Lambda. 
+        Supports compression when target is S3. 
+    Analytics: 
+        It perform real time analytics using SQL. 
+
+    Kinesis -> Kinesis Data Firehose -> Create delivery stream -> Select source, destination
+
+
+------------------------------------------------------------------------------------------------------------------------------
+
+Cloud Watch Metrics:
+
+    It is to track metrics like cpu for all aws services. 
+    Detailed monitoring - Metrics comes in every 1 minute and to pay. 
+    Basic monitoring - Every 5 minutes and no charges. 
+    Upto 15 months maximum to check the metrics. 
+
+        < 60 seconds data available for 3 hours. 
+        1 minute data available for 15 days. 
+        5 minutes data available for 63 days 
+        1 hour data available for 15 months. 
+
+    Cloud watch -> Metrics 
+
+    Cloud watch agent used to get EC2- RAM details. 
+    In EBS, How much space left can get usin cloud watcg agent. 
+    In ASG, Group Metrics not enabled by default. 
+
+Cloud Watch Custom Metrics: 
+    Standard Resolution     -> Granularity of 1 minute. 
+        High Resolution         -> Granularity of 1 sec. 
+        Can publish custom petrics using API or CLI using putmetricdata call. 
+
+        aws cloudwatch put-metric-data --metric-name Buffers --namespace MyNameSpace --unit Bytes --value 231434333 --dimensions InstanceId=1-23456789,InstanceType=m1.small
+
+        aws cloudwatch get-metric-statistics --metric-name Buffers --namespace MyNameSpace --dimensions Name=InstanceId,Value=1-23456789 Name=InstanceType,Value=m1.small --start-time 2021-12-23T04:00:00Z --end-time 2021-12-23T07:00:00Z --statistics Average --period 60
+
+Cloud Watch Metrics - Exports: 
+
+    aws cloudwatch get-metric-statistics --metric-name Buffers --namespace MyNameSpace --dimensions Name=InstanceId,Value=1-23456789 Name=InstanceType,Value=m1.small --start-time 2021-12-23T04:00:00Z --end-time 2021-12-23T07:00:00Z --statistics Average --period 60
+
+    Use cloud watch events to trigger lambda for every specific schedule. Lambda is used to export metrics to S3. 
+
+------------------------------------------------------------------------------------------------------------------------------
+
+Cloud Watch Alarms: 
+
+    Based on metrics, it trigger the alarm. 
+    Cannot combine multiple metrics for one alarm. One metric for one alarm. 
+
+    ALARM           -> Outside of threshold. 
+    INSUFFICIENT    -> Insufficient data. 
+    OK              -> Within Threshold. 
+
+    Cloud Watch -> Alarm -> Create Alarm 
+
+    Send notification to SNS. 
+
+    In Alarm: 
+        Auto scaling actions
+        EC2 Action 
+        Systems Manager Action -> Create Incidient or OpsItem 
+
+Cloud Watch Alarm - Billing Alarm: 
+
+    Cloud watch -> Alarms -> Billing (Metric Name - EstimatedCharges)
+    It can be at global level or service level. 
+
+------------------------------------------------------------------------------------------------------------------------------
+
+Cloud watch Logs - Overview: 
+
+    Cloud Watch -> Logs -> Log Group -> Log Streams -> Logs 
+    /aws/service-name/  -> Managed by AWS 
+    Expire Events After Option -> To set expiry date. 
+    Can create or delete log stream. 
+
+Cloud Watch Unified Agent: (Send metrics and logs) 
+
+    https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/UseCloudWatchUnifiedAgent.html
+    https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Install-CloudWatch-Agent.html
+
+    It uses the ssm parameter store to keep the config details. 
+
+Cloud Watch Logs - Metric Filters & ALarms: 
+    Cloud watch -> Log group -> Create metric filter : 
+        Define pattern - like Error , Info etc 
+        Assign a metric 
+
+Cloud Watch Logs - Export to S3: 
+    Cloud watch -> Logs -> Actions -> Export data to Amazon S3. 
+    It is done manually. 
+
+Cloud Watch Logs - Subscriptions: 
+    Cloud watch -> Logs -> Actions -> Subscriptions -> : 
+        Kinesis, Kinesis Firehose, Lambda, Amazon opensearch service. 
+
+------------------------------------------------------------------------------------------------------------------------------
+
+CLoud Watch Events: 
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
 
