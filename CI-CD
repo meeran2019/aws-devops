@@ -1386,11 +1386,54 @@ Cloud Watch Logs - Subscriptions:
 
 ------------------------------------------------------------------------------------------------------------------------------
 
-CLoud Watch Events: 
+Cloud Watch Events (Amazon event bridge) : 
 
+    1. create a rule (Source or schedule)
+    2. select a target 
+
+Cloud watch event - INtegration with cloud trail: 
+    AWS API Call via Cloud Trail available for all services. 
+    Can give our own API call. 
+    This helps if some API action is not listed as part of AWS services. 
+
+Cloud watch events vs S3 Events: 
+    S3 -> bucket -> Properties -> Event Notifications 
+        Event types can be Object creation, removal, restore, ACL, Tagging, Replication, Life cycle, Intelligent Tiering. 
+        Destination can be Lambda, SNS, SQS 
+        Here little event types are supported but in event bridge have support multiple and more events. 
+
+------------------------------------------------------------------------------------------------------------------------------
+
+Cloud Watch Dashboards:
+    Cloud watch -> DAshboard -> Create dashboard 
+        Data source can be logs or Metrics. 
+        Correlate the data using dashboard. 
+        It is multi region. 
+
+------------------------------------------------------------------------------------------------------------------------------
+
+X-Ray Overview: 
+    It is like app dynamics. 
+    For distributed application, it gives service map. 
+    It helps to analyze and debug applications. 
+    It used for debugging, tracing and service map. 
+
+
+------------------------------------------------------------------------------------------------------------------------------
+
+Amazon ES - ELK (Elastic Search + Kibana + Logstash):
+    Now open search. 
+    Cloud watch -> Subscription -> Open Search. 
     
+------------------------------------------------------------------------------------------------------------------------------
+
+Tagging in AWS:
+    Cost tracking, Automation, Security, Organization, 
 
 
+------------------------------------------------------------------------------------------------------------------------------
+                                POLICIES AND STANDARD AUTOMATION
+------------------------------------------------------------------------------------------------------------------------------
 
 
 
