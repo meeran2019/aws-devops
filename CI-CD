@@ -1435,6 +1435,97 @@ Tagging in AWS:
                                 POLICIES AND STANDARD AUTOMATION
 ------------------------------------------------------------------------------------------------------------------------------
 
+SSM Overview & Quick Setup: 
+
+    It helps manage EC2 & On-Prem systems at scale. 
+    Get operational insights about state of infrastructure. 
+    Easily detect problems. 
+    PATCHING automation for enhanced compliance. 
+    Works for both windows and linux. 
+    Integrated with AWS Config and Cloudwatch metrics/dashboard. 
+
+It consists of: 
+    Resource Groups 
+    Insights 
+    Parameter store 
+    Automation 
+    Run COmmand 
+    Session Manager 
+    Patch Manager 
+    Maintenance windows 
+    State Manager - define and maintain configuration of OS and applications. 
+
+    Need to instal SSM agent to instances. For few instances, default installed. 
+    Systems Manager -> Quick Setup -> Select instances -> Create 
+
+
+SSM - EC2 Setup: 
+    https://docs.aws.amazon.com/systems-manager/latest/userguide/agent-install-al.html
+    sudo systemctl start amazon-ssm-agent 
+    sudo systemctl status amazon-ssm-agent 
+
+SSM On-Premise Setup: 
+    Hybrid activation involves non AWS machines like On-Prem, other machines can integrate with SSM.
+    There is NO IAM role tagged to simulate as on-prem 
+    https://docs.aws.amazon.com/systems-manager/latest/userguide/sysman-install-managed-linux.html
+    It requires activation code & activation id: 
+        SSM -> Node Management -> Hybrid Activations -> Create an activation -> 
+
+    Activation Code   
+    Activation ID   63edbf71-40fd-4771-b2cd-bd138f5ee8ec
+
+    sudo /snap/amazon-ssm-agent/current/amazon-ssm-agent -register -code "xxxxxx" -id "63edbf71-40fd-4771-b2cd-bd138f5ee8ec" -region "us-east-1" 
+
+    For aws managed instances, tagged with i- 
+    for other resources like on-prem, tagged with mi- 
+
+AWS Resource Groups: 
+    It helps to find and group AWS resources using queries. 
+    AWS Resource groups -> Create a resource group : 
+        Group by Tags, Cloud Formation stack 
+
+SSM Run Command: 
+    It used to run a command on specific instances. 
+    It is done by using documents. 
+
+    SSM -> Documents -> create document (Command/Session or Automation) -> JSON Document. 
+    SSM -> RUN Command -> Select Document -> Select Instances -> Run 
+    AWS Command Line Interface Command -> It gives CLI command which can be used to execute separately. 
+
+SSM Parameter Store: 
+    SSM -> Parameter store. 
+    Standard  (< 10k & 4kb limit) & Advanced Type (> 10k & 8 kb limit)
+    Type - String, StringList, SecureString (Encrypt using KMS key). 
+    /myapp/dev/environment 
+
+    aws ssm get-parameters-by-path 
+
+SSM Patch Manager: 
+    SSM -> Patch Manager -> Patch Now 
+    Available for Install type only not for scan. Using life cycle hooks, can run systems manager documents during Before installation, After installation and On Exit. 
+
+SSM Maintenance Window: 
+    Schedule and implement maintenance tasks across fleet. 
+    It can be tagged to : 
+        Register Targets 
+        Register run command 
+        Register Automation task 
+        Register Lambda task 
+        Register step function task 
+
+SSM Inventory: 
+    It has list of instances track by SSM
+    It helps to check list of installed apps on instances. 
+
+SSM Automations: 
+    1. Create the document. 
+    2. Use that document in Automation creation. 
+
+
+
+
+
+
 
 
 

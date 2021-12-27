@@ -62,6 +62,22 @@ Inspector for VULNERABILITIES.
 
 
 
+Set up a CloudWatch Logs subscription with an AWS Lambda function which is configured to add a FOR_DELETION tag to the Amazon EC2 instance that produced the SSH login event. Run another Lambda function everyday using the CloudWatch Events rule to terminate all EC2 instances with the custom tag for deletion.
+
+Amazon CloudWatch alarm that monitors an Amazon EC2 instance and automatically recovers the instance if it becomes impaired due to an underlying hardware failure or a problem that requires AWS involvement to repair. Terminated instances cannot be recovered. A recovered instance is identical to the original instance, including the instance ID, private IP addresses, Elastic IP addresses, and all instance metadata. If the impaired instance is in a placement group, the recovered instance runs in the placement group.
+
+Amazon GuardDuty offers threat detection that enables you to continuously monitor and protect your AWS accounts and workloads. GuardDuty analyzes continuous streams of meta-data generated from your account and network activity found in AWS CloudTrail Events, Amazon VPC Flow Logs, and DNS Logs. It also uses integrated threat intelligence such as known malicious IP addresses, anomaly detection, and machine learning to identify threats more accurately. This can include issues like escalations of privileges, uses of exposed credentials, or communication with malicious IPs, URLs, or domains.
+
+AWS Inspector is an automated security assessment service that helps improve the security and compliance of applications deployed on AWS. It will not detect possible malicious activity on your instances.
+
+Amazon GuardDuty is a threat detection service that continuously monitors for malicious activity and unauthorized behavior to protect your AWS accounts and workloads. With the cloud, the collection and aggregation of account and network activities is simplified, but it can be time consuming for security teams to continuously analyze event log data for potential threats. With GuardDuty, you now have an intelligent and cost-effective option for continuous threat detection in the AWS Cloud. The service uses machine learning, anomaly detection, and integrated threat intelligence to identify and prioritize potential threats. GuardDuty analyzes tens of billions of events across multiple AWS data sources, such as AWS CloudTrail, Amazon VPC Flow Logs, and DNS logs. With a few clicks in the AWS Management Console, GuardDuty can be enabled with no software or hardware to deploy or maintain. By integrating with AWS CloudWatch Events, GuardDuty alerts are actionable, easy to aggregate across multiple accounts, and straightforward to push into existing event management and workflow systems
+
+AWS_RISK_CREDENTIALS_EXPOSED event to monitor any exposed IAM keys from the Internet
+
+Your CodeCommit repository and Amazon SNS topic must be on the same region for the triggers to work.
+
+
+
 
 
 
