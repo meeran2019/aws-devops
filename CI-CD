@@ -1521,6 +1521,36 @@ SSM Automations:
     1. Create the document. 
     2. Use that document in Automation creation. 
 
+------------------------------------------------------------------------------------------------------------------------------
+
+AWS Config: 
+    It provides a detailed view of resources associated with AWS account, including how they are configured , how they are related to one another and how the configurations and their relationships have changed over time. 
+    It gives summarized view of AWS and Non AWS resources and compliance status of rules and resources in each AWS region. 
+
+    AWS Config -> Select resources -> Tag RULES -> Create 
+
+    Conformance Pack -> It is collection of AWS Config rules and remediation actions that can be deployed and monitor as single entity. 
+
+    Aggregator -> It collects AWS Config data from multiple accounts and region. Use an aggregator to view the resource configuration and compliance data recorded. 
+
+    Timeline 
+    Interaction with cloud trail to get who and what changed. 
+
+Config Rules: 
+    AWS Config -> Rules -> Add rule (AWS Managed or Custom Lambda based rule)
+    Trigger type - Configuration changes or Periodic 
+
+Config - Automations: 
+    SNS Notifications 
+    Amazon cloudwatch event rule. 
+    Remediation capability with Rules for any compliant issue. 
+
+Config - Multi Account: 
+    Aggregator used for multi account and multi region to collect config data. 
+    Authorization allows to give permission for the account and region list to process aggragator. 
+
+------------------------------------------------------------------------------------------------------------------------------
+
 
 
 
