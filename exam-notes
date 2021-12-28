@@ -76,6 +76,14 @@ AWS_RISK_CREDENTIALS_EXPOSED event to monitor any exposed IAM keys from the Inte
 
 Your CodeCommit repository and Amazon SNS topic must be on the same region for the triggers to work.
 
+Amazon RDS doesnot support Oracle RAC. 
+
+Aurora doesnot support Oracle RAC.
+
+The s3-bucket-public-read-prohibited and s3-bucket-public-write-prohibited are AWS Config managed rules that check if your Amazon S3 buckets do not allow public read access and write access. 
+
+A patch group is an optional means of organizing instances for patching. For example, you can create patch groups for different operating systems (Linux or Windows), different environments (Development, Test, and Production), or different server functions (web servers, file servers, databases). Patch groups can help you avoid deploying patches to the wrong set of instances. They can also help you avoid deploying patches before they have been adequately tested.
+
 
 
 
