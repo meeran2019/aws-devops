@@ -1458,7 +1458,6 @@ It consists of:
     Need to instal SSM agent to instances. For few instances, default installed. 
     Systems Manager -> Quick Setup -> Select instances -> Create 
 
-
 SSM - EC2 Setup: 
     https://docs.aws.amazon.com/systems-manager/latest/userguide/agent-install-al.html
     sudo systemctl start amazon-ssm-agent 
@@ -1551,36 +1550,142 @@ Config - Multi Account:
 
 ------------------------------------------------------------------------------------------------------------------------------
 
+Service Catalog: 
 
+    It allows organisations to create and manage catalog of IT services that are approved for use on AWS. 
+    It helps to create self service portal which have pre approved services. 
+    It helps new AWS users. 
+    Product -> Portfolio - Teams (Collection of products) -> Access  (Admin Task)
+    Product list -> Launch (User Tasks)
+    Product are cloudformation templates. 
 
+------------------------------------------------------------------------------------------------------------------------------
+Inspector: 
 
+    It enables to analyze behaviour of AWS resources and helps to identify potential security issues. 
+    It is vulnerability management service that helps scans workloads for software vulnarabilities and unintended network exposure. 
+    Network assessment (requires no agent), Host assessment (requires agent to install).
+    It uses templates to check the vulnarabilities. 
 
+    Inspector -> Enable inspector. 
+    It can be integrate with cloud watch events. 
+    Can send notification after the events like run start, finished, report etc. 
 
+------------------------------------------------------------------------------------------------------------------------------
 
+EC2 Instance Compliance: 
 
-
-
-
-
-
-
-
-
-
-
-
+    AWS Config: 
+        It ensures proper configuration using Rules. 
+        For ex: Security group is tagged. 
+        For Audit and Compliance over time. 
     
+    Inspector: 
+        Use inspector agent to scan vulnarabilities check for host. 
+        For network scan. 
+        Require instance to be launch in advance. 
+    
+    Systems Manager: 
+        Run automations, run command, patch, inventory. 
+    
+    Service Catalog: 
+        Restrict user with in product (services). 
+    
+    Configuration Management: 
+        SSM, OpsWorks, Ansible, Chef, Puppet, User data. 
+        
+------------------------------------------------------------------------------------------------------------------------------
+
+Health - Service Health Dashboard & Personal Health: 
+    Service Health DAshbord is global and get as RSS feed. 
+    Personal Health Dashboard - It can integrate with cloud watch events 
+
+------------------------------------------------------------------------------------------------------------------------------
+
+Trusted Advisor: 
+    It provides recommendations that helps to follow the aws best practices. 
+    It evaluates account using Checks. These checks identify ways to optimize your AWS infrastructure, improve security and performance, reduce costs and monitor service quotos. 
+
+    It can integrate with cloud watch events. 
+    Send to slack channel using lambda thorugh health service 
+    Trusted advisor -> Event bridge -> Lambda (low utilization, snapshot backup, exposed accessed key )
+
+    Manual refresh for every 5 mins. 
+    API - refresh-trusted-advisor-check 
 
 
+------------------------------------------------------------------------------------------------------------------------------
 
+Guard-Duty: 
 
+    Intelligent threat discovery to protect aws account. 
+    uses machine learning, anamoly detection, 3rd party data. 
+    Checks cloud trail logs, vpc flow logs, DNS logs. 
+    Notifies in case of failure.
+    Integrate with event bridge. 
 
+------------------------------------------------------------------------------------------------------------------------------
 
+Macie: 
 
+    It is data security and data privacy service that helps to discover, monitor and protect sensitive data. 
+    It helps to detect any PII data. 
+    Macie -> Enable Macie 
 
+------------------------------------------------------------------------------------------------------------------------------
 
+Secrets Manager: 
 
+    Easily rotate, manage and retrieve secrets throughout their lifecycle. 
+    Replica Secret - Helps to replicate secret in other region. 
+    Automatic rotation enable to rotate automatically using lambda function. 
 
+------------------------------------------------------------------------------------------------------------------------------
+
+License Manager: 
+
+    It makes easier to manage software license from vendors such as microsoft, oracle etc. 
+    It helps to create customize licensing rules.
+    Also can use to easily distribute and track license. 
+    Map license to Resources/Instances. 
+
+------------------------------------------------------------------------------------------------------------------------------
+
+Cost Allocation Tags: 
+    Tags used to group related resources. 
+    AWS Generated Cost Allocation Tags (aws:)
+    User Tags (user: )
+    Takes 24 hours to reflect in billing. 
+    Account -> Billing Dashboard
+
+------------------------------------------------------------------------------------------------------------------------------
+
+Data Protection & Network Protection in AWS: 
+
+    TLS for in-transit encryption. 
+    ACM to manage SSL/TLS certificate. 
+    Load balancer: 
+        ELB, ALB, NLB provide SSL termination. 
+    Cloudfront with SSL 
+    All AWS services expose HTTPS endpoint. 
+
+    S3 Encryption: 
+        SSE-S3      -> S3 encryption 
+        SSE-KMS     -> Use KMS key 
+        SSE-C       -> Customer provided key. 
+        Client side encryption -> Send encrypted object. 
+        x-amz-server-side-encryption -> to enforce encryption. 
+    
+    PHI - protected health information
+    PII - personally identifiable information 
+
+    Direct Connect, VPN uses IPSec.
+
+    WAF - web security rule against exploits. 
+
+------------------------------------------------------------------------------------------------------------------------------
+            INCIDENT, EVENT RESPONSE, HA AND FAULT TOLERANCE
+------------------------------------------------------------------------------------------------------------------------------
 
 
 
