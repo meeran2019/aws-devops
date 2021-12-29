@@ -1832,17 +1832,178 @@ ASG - Code Deploy Integration:
 
     While desired capacity changed, it takes the last versions. Incase if any deployment, unless success takes the last version. use suspend feature or standby. 
 
+ASG - Deployment Strategies: 
+
+    In Place    -> Update on same instance  
+    Rolling     -> Create new instance 
+    Replace     -> Create new set of instances. 
+    Blue Green  -> use load balancer, route 53, shift traffic to new instances. 
+
 ------------------------------------------------------------------------------------------------------------------------------
 
+DynamoDB: 
+
+    Partition Key, Sort Key   -> Primary key 
+    Secondary Index: 
+        Local secondary Index (LSI) - Cannot create once table created and partition key is same. RCU & WCU inherit from table. 
+        Global secondary Index (GSI) - can create after table created and partition key & sort key can be different. It requires RCU & WCU. 
+        Read/Write Capacity Unit: 
+            Ondemand or Provisioned 
+
+    DAX - DynamoDB Accelarator -> Used for Cache and require to provision. 
+
+    Stream - used to stream the data (old or new). It requires to enable in dynamodb. From lambda, trigger the dynamodb stream. 
+
+    GLobal tables enables to use dynamodb as fully managed, multi region, multi master database. Ensure table is empty and stream is enabled. It helps to create replica table in another region. 
+    In Global tables, if updated in one region, it will reflect in another region. 
+
+    No more than 2 processes should be reading from the same stream shard at same time. otherwise can result in throttling. Because in underlying uses kinesis stream which have 2 mb/s read.
+
+    TTL (Time To Live) (Use key as ttl and value as epoch time, particular key will be expired in given time). It requires to enable TTL and give the TTL attribute like ttl (which is used in key).
+
+    Big File  -> S3 -> Lambda -> Dynamodb (writes metadata to dynamodb)
+    Dynamodb -> Dynamodb stream -> Lambda function -> Amazon ES 
+
+------------------------------------------------------------------------------------------------------------------------------ 
+S3: 
+
+    S3 Events available to send notification sns, sqs, lambda. 
+    Requires to enable cloud trail to work with cloud watch events. 
+    Cross region replication -> to replicate in another region with same or different account. 
+    Same region replication.
+    Life cycle policy - Rules to transition object to other like IA, Glacier, Intelligent tiering. 
+    Encryption - None, AES 256 (s3), KMS, SSE - C, Client side encryption. 
+    Server Access Log - can enable logging. 
+
+------------------------------------------------------------------------------------------------------------------------------ 
+
+Multi AZ Overview: 
+
+    Services where multi AZ must be enabled manually: 
+        EFS, ELB, ASG, EB, 
+    RDS, ELastic Cache (Standby DB)
+
+    Services multi AZ implicitly: 
+        S3 (except one zone IA)
+        DynamoDB 
+        All of fully managed services. 
+    
+    in EBS multi AZ process, from ASG, use hooks to take snapshot of EBS, Create EBS from snapshot and use that EBS for instances.
+
+------------------------------------------------------------------------------------------------------------------------------ 
+
+Multi Region - Overview: 
+
+    Dynamodb global tables (active active).
+    AWS Config aggregators (with multi account and multi region)
+    RDS Cross Region read replicas (Used for DR and Read)
+    Aurora Database (One is for master and other for read/DR)
+    EBS Volumue Snapshots, AMI, RDS snapshots can copy to other region. 
+    VPC Peering allow traffic between regions. 
+    Route 53 is global network for DNS servers. 
+    S3 cross region replication. 
+    Cloud front is CDN at edge locations. 
+    Lambda@Edge is used in cloudfront at edge locations. 
+
+Multi Region with Route 53: 
+
+    Route 53  ->    Loadbalancer + AWS Services  (Region 1)
+                    Loadbalancer + AWS Services  (Region 2) 
+
+        Based on health check, route traffic to different region. 
+
+------------------------------------------------------------------------------------------------------------------------------ 
+
+Multi Region - Cloud Formation - Stacksets: 
+
+    Stacksets is used to create/update/delete stacks in multi account and multi region with single operation. 
+    Enabled AWS COnfig in other regions using cloud formation stack. 
 
 
+ ------------------------------------------------------------------------------------------------------------------------------ 
+Multi Region - Code Pipeline: 
 
+    In pipeline, during code deploy, can select other region.     
 
+------------------------------------------------------------------------------------------------------------------------------ 
 
+Disaster Recovery - Overview: 
 
+    Hybrid -> On prem to AWS Cloud 
+    Cloud  -> AWS Region A to Region B 
 
+    RPO -> Recovert Point Objective -> how long data loss is allowed. how frequency backup is taking. 
+    RTO -> Recovery Time Objective  -> How long failure/downtime is allowed. 
 
+Strategies: 
+    Backup & Restore: 
+        High RPO , Storage Gateway , Snapshots
+        It is Cheap. 
+        High RTO 
 
+    Pilot Light: 
+        Core component are running always. 
+        Just require to add on other non critical components. 
+        Faster than backup. 
 
+    Warm Standby:
+        Full system is up and running at lower spec. 
+        upon disaster, scale to production load. 
+        
+    Hot Site / Multi site approach: 
+        It is expensive and full production scale is running in another region. 
+        if disaster, switch to other site. 
 
+------------------------------------------------------------------------------------------------------------------------------ 
+
+Disaster Recovery - Devops Checklist: 
+
+    Is AMI copied and stored in parameter store. 
+    RPO & RTO defined. 
+    Cloudformation stackset works in another region. 
+    Route 53 works correctly. 
+    Is all data backed up. 
+    RDS read replication enabled. 
+
+    Backups: 
+        AWS Backup with EFS. 
+        Route 53 backup - ListResourceRecordSets for export. Script to import recordsets in to another DNS. 
+        Elastic beanstalk - use saved configuration 
+
+------------------------------------------------------------------------------------------------------------------------------ 
+
+On Premise Strategies with AWS: 
+
+    Ability to download linux 2 as .iso image and allow to run in on-prem. 
+    VM Import/Export - Migrate application to EC2, Export the VM from EC2 to On-prem. 
+    Application Discovery Services - Gather information about on-prem and plan a migration. 
+    Database Migration service - Migrate database from AWS <> On-prem, On-prem <> AWS 
+    Server Migration Service - Migration of On-prem live servers to AWS.
+
+------------------------------------------------------------------------------------------------------------------------------ 
+
+Multi Account - AWS Organization: 
+
+    Master account and cant change. 
+    Member accounts part of one organization. Requires invite to join in organization. 
+    Consolidated billing. 
+    Pricing benefits from aggregated usage. 
+
+    Organizational Unit (OU) - can be based on region, business etc. 
+
+    Service Control Policies (SCP) - Policy applied at member accounts. 
+
+    Cross account requires IAM trust. IAM Roles can be assumed in cross account using STS. 
+
+    Cross account invocation of code deploy using cloud formation stack. 
+
+    AWS Config aggregators. 
+
+    Cloud Formation stack sets. 
+
+    Event bus. 
+
+    Centralized logging: Log group -> LogDestination create using CLI, it connect with kinesis firehose and connect to S3.
+
+------------------------------------------------------------------------------------------------------------------------------ 
 
