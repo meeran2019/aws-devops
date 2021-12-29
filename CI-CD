@@ -1684,8 +1684,165 @@ Data Protection & Network Protection in AWS:
     WAF - web security rule against exploits. 
 
 ------------------------------------------------------------------------------------------------------------------------------
-            INCIDENT, EVENT RESPONSE, HA AND FAULT TOLERANCE
+            INCIDENT, EVENT RESPONSE, HIGH AVAILABILITY, FAULT TOLERANCE AND DISASTER RECOVERY 
 ------------------------------------------------------------------------------------------------------------------------------
+
+Launch configuration or Template is used to define the configuration template. 
+
+Auto Scaling Group - From Launch Configuration: 
+
+    EC2 -> Auto Scaling Group -> Select Launch Configuration, Load balancer, Desired, Min & Max size, Scaling policy.
+
+    ASG -> Launch Configuration: 
+        Name, AMI, Instance Type, Volume, Security group, Key Pair 
+
+
+Auto Scaling Group - From Launch Template: 
+    It is advanced way of defining the template. 
+    It can be versioned. 
+    Can create a new template from existing source template. 
+    From launch template, can launch an instance, create auto scaling group, create spot fleet. 
+    It allows to use mix of On demand + Spot purchasing options. 
+
+    EC2 -> Auto Scaling Group -> Select Launch Template, Load balancer, Desired, Min & Max size, Scaling policy.
+
+    Instances -> Launch Template: 
+        Name, AMI, Instance Type, Volume, Security group, Key Pair 
+
+ASG - Scheduled Actions: 
+    If know the pattern or load in advance, can schedule to run the ASG in specific date or recurrence. 
+    It helps to provide min,max and desired capacity to run on specific timing or recurrence like CRON. 
+    EC2 -> ASG -> Automatic Scaling -> Scheduled Actions. 
+    
+ASG - Scaling Policies: 
+
+    EC2 -> ASG -> Automatic Scaling -> Dynamic Scaling Policy, Predictive Scaling Policy. 
+    Dynamic Scaling Policy: 
+        Target tracking -> Target based on metric like CPU uitlization. 
+        Step tracking -> Add step based on Cloud watch alarm. 
+        Simple tracking -> Add capacity based on Cloud watch alarm. 
+
+    Predictive Scaling Policy - Predictive scaling builds a forecast based on historical data and scales out capacity in advance of forecasted hourly load, so that new instances are ready to handle traffic when the load arrives.
+
+    Default Cooldown - Default 300s. No of seconds after scaling activity completes and before new instance begins. 
+    Seconds to WarmUp after scaling.
+    Disable scale in while scale out. 
+
+ASG - ALB Integration: 
+    1. Created the ALB. 
+    2. tag the ALB to ASG. 
+    Slow start duration - It takes some time for new scaled in instances. 
+
+ASG - HTTPS on ALB: 
+    ALB -> Listener -> HTTPS to be enabled. 
+    It requires SSL certificates and can be imported from IAM, ACM or Import manually to ACM/IAM.
+    For redirection from HTTP to HTTPS -> Listener -> Redirect to HTTPS 
+
+ASG - Suspending Process and Troubleshooting: 
+
+    Use standby feature instead of suspend feature to troubleshoot and reboot an instance. 
+    Scaling Process Types: 
+        Launch 
+        Terminate 
+        AddToLoadBalancer -> will not add instances to load balancer. After suspend, require to manually to register instance to target group. 
+        AlarmNotification 
+        AZRebalance 
+        HealthCheck 
+        InstanceRefresh 
+        ReplaceUnhealthy 
+        ScheduledActions 
+    
+    All these process types can be suspended and resumed independently. 
+
+    EC2 -> ASG -> Details -> Advanced Configurations -> Suspend process. 
+
+    Detach - Create replacing instances. 
+    Standby - Doesnot create replacing instances. 
+    ScaleIn protection - prevent instances from terminating. 
+
+ASG - Lifecycle Hooks: 
+
+    It is having hooks gives ability to perform custom actions based on event occurs. 
+
+    Scale out: 
+        Pending     -> Pending-wait , Pending-proceed 
+        Inservice 
+    Scale In: 
+        Terminating -> Terminating-wait, Terminating-proceed  
+        Terminated 
+
+    EC2 -> ASG -> Instance Management -> Lifecycle hooks 
+
+    After timeout, continue or abondon. 
+    
+    It trigger SNS, SQS and Lambda through Events bridge. 
+
+    Warm Pool - Decrease scale-out latency by pre-initializing EC2 instances and save money by reducing the number of continuously running instances.
+
+    aws autoscaling-complete-lifecycle-action command used to complete the hooks. 
+
+    Lambda triggers SSM document to run user scripts in ec2. 
+
+
+ASG - Termination Policies: 
+
+    Allocation strategy 
+    Closest to next hour instances. 
+    Default 
+    Newest instance 
+    Oldest instance 
+    Oldest launch configuration 
+    Oldest launch template 
+    custom termination policy 
+
+    Termination Priority: 
+        1. Which AZ has more instances. 
+        2. Allocation strategy for on-demand and spot instances. 
+        3. Any using oldest launch configuration or template. 
+        4. Instances closest to next billing hour. 
+
+ASG - Integrity with SQS: 
+
+    SQS Queue -> Application -> Emits custom metric -> Amazon cloud watch -> Auto scaling event -> Change capacity of instances. 
+    can do API call to enable scale in protection. 
+
+ASG - Monitoring: 
+
+    EC2 -> ASG -> Monitoring -> Cloud watch 
+    EC2 -> ASG -> Activity -> Activity Notification 
+
+ASG - CloudFormation Creation Policy: 
+
+    Type: AWS::AutoScaling::AutoScalingGroup 
+    Use CreationPolicy to wait to receive signal from instances. 
+
+ASG - CloudFormation Update Policy: 
+
+    If updatepolicy is not used, then existing instances will not be updated. 
+    Can update with same template and will show change set. 
+    UPdatePolicy - AutoScalingReplacingUpdate, AutoScalingRollingUpdate, AutoScalingScheduledAction. 
+
+ASG - Code Deploy Integration: 
+
+    Code Deploy supports: 
+        Auto scaling group -> Select the ASG 
+        EC2/On prem 
+
+    Code deploy will automatically deploy application revision to ASG new instances. 
+
+    While desired capacity changed, it takes the last versions. Incase if any deployment, unless success takes the last version. use suspend feature or standby. 
+
+------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
 
 
 
