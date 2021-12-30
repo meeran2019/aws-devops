@@ -7,27 +7,63 @@ CodeCommit
 
 https://www.atlassian.com/git/tutorials/using-branches
 
+    Refer Git Tutorial Repository. 
+
 https://docs.aws.amazon.com/codecommit/latest/userguide/auth-and-access-control-iam-identity-based-access-control.html
 
 https://aws.amazon.com/blogs/devops/refining-access-to-branches-in-aws-codecommit/
 
+        {
+            "Effect": "Deny",
+            "Action": [
+                "codecommit:GitPush",
+                "codecommit:DeleteBranch",
+                "codecommit:PutFile",
+                "codecommit:MergePullRequestByFastForward"
+            ],
+            "Resource": "arn:aws:codecommit:us-east-2:80398EXAMPLE:MyDemoRepo",
+            "Condition": {
+                "StringEqualsIfExists": {
+                    "codecommit:References": [
+                        "refs/heads/master"   
+                    ]
+
+
 https://docs.aws.amazon.com/codecommit/latest/userguide/how-to-notify.html
 
-https://docs.aws.amazon.com/codecommit/latest/userguide/how-to-repository-email.html )
+    Can create upto 10 triggers for each repository. 
+    Triggers are used: 
+        1. when someone pushes to repository, send email via SNS topic. 
+        2. Notify external build system to start build when pushes to main branch of repository via Lambda. 
+
+    Code Commit -> Repositories -> Repository-Name -> Settings -> Notifications. -> SNS or AWS Bot Chat. 
+    Code Commit -> Repositories -> Repository-Name -> Settings -> Trigger to Lambda or SNS 
+    
+    Although you can configure a trigger to use Amazon SNS to send emails about some repository events, those events are limited to operational events, such as creating branches and pushing code to a branch. Triggers do not use CloudWatch Events rules to evaluate repository events.
+
+
+https://docs.aws.amazon.com/codecommit/latest/userguide/how-to-repository-email.html
 
 https://docs.aws.amazon.com/codecommit/latest/userguide/how-to-notify-lambda.html
 
 https://docs.aws.amazon.com/codecommit/latest/userguide/how-to-migrate-repository-existing.html
 
+--------------------------------------------------------------------------------------------------------------------------------
+
 CodeBuild
 
 https://docs.aws.amazon.com/codebuild/latest/userguide/build-spec-ref.html
+
+    CODEBUILD_SRC_DIR - path of buildspec file. 
+
 
 https://docs.aws.amazon.com/codebuild/latest/userguide/samples.html
 
 https://docs.aws.amazon.com/codebuild/latest/userguide/sample-docker.html
 
 https://aws.amazon.com/blogs/devops/validating-aws-codecommit-pull-requests-with-aws-codebuild-and-aws-lambda/
+
+--------------------------------------------------------------------------------------------------------------------------------
 
 CodeDeploy
 

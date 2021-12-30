@@ -1,21 +1,20 @@
-
 ------------------------------------------------------------------------------------------------------------------------------
                                 CI-CD OVERVIEW
 ------------------------------------------------------------------------------------------------------------------------------
 
 Continuos Integration:
-    Push the code to Code commit/ github etc.
+    Push the code to Code Commit/ Github etc.
     Once code pushed, build/test server process the code. 
 
 Continuos Delivery/Deployment:
     Continuos delivery involves manual step. 
     Continuos deployment is fully automated. 
 
-Code Repository:AWS Code Commit, Git Hub
-Build & Test:   AWS Code Build , Jenkins, Bamboo 
-Provision:      AWS Elastic Bean Stalk 
-Deploy:         AWS Code Deploy (User managed EC2, On Prem, Lambda, ECS)
-Orchestrate:    AWS Code Pipeline 
+Code Repository:    AWS Code Commit, Git Hub
+Build & Test:       AWS Code Build , Jenkins, Bamboo 
+Provision:          AWS Elastic Bean Stalk 
+Deploy:             AWS Code Deploy (User managed EC2, On Prem, Lambda, ECS)
+Orchestrate:        AWS Code Pipeline 
 
 -------------------------------------------------------------------------------------------------------------------------------
 
@@ -139,7 +138,6 @@ Code Build - First Build:
 
 Code Build - buildspec.yml file: 
     It can be placed in S3 or root of source directory.
-
 
         version: 0.2                    # represent buildspec version. recommended to use 0.2 
         run-as: Linux-user-name         # optional specific to linux. 
@@ -307,7 +305,6 @@ Code Build - Cloud watch Events, Cloudwatch Logs, Cloud watch metrics & Triggers
 Code Build - Validating code commit Pull Requests: 
     https://aws.amazon.com/blogs/devops/validating-aws-codecommit-pull-requests-with-aws-codebuild-and-aws-lambda/
 
-
 -------------------------------------------------------------------------------------------------------------------------------
 
 Code Deploy:
@@ -333,7 +330,7 @@ Code Deploy - EC2 Setup:
             sudo ./install auto
             sudo service codedeploy-agent status
 
-Code Deploy - Application, Deployment Groups & FIrst Deployment: 
+Code Deploy - Application, Deployment Groups & First Deployment: 
     1. Created the role (Allow code deploy to access EC2).
     2. Created the application. 
     3. Create the deployment group: 
@@ -343,7 +340,7 @@ Code Deploy - Application, Deployment Groups & FIrst Deployment:
     5. Create deployment: 
             s3 bucket location which contain code and then create deployment. 
 
-    Note: TO check whether code deploy agent is properly installed. If not installed, then deploy will timeout with error. 
+    Note: To check whether code deploy agent is properly installed. If not installed, then deploy will timeout with error. 
 
 Code Deploy - Deployment Groups: 
     Under application, can create multiple deployment group with different tags. 
@@ -366,7 +363,7 @@ Code Deploy - appspec.yml file:
 
     https://docs.aws.amazon.com/codedeploy/latest/userguide/reference-appspec-file.html
 
-    NOte: Since run as root, no need of sudo in scripts. 
+    Note: Since run as root, no need of sudo in scripts. 
 
     version: 0.0
     os: linux
@@ -400,7 +397,6 @@ Code Deploy - appspec.yml file:
         timeout: 300
         runas: root
         
-
 Code Deploy - Hooks & Environmental Variables: 
     https://docs.aws.amazon.com/codedeploy/latest/userguide/reference-appspec-file-structure-hooks.html
 
@@ -411,7 +407,6 @@ Code Deploy - Hooks & Environmental Variables:
     then
         sed -i -e 's/Listen 80/Listen 9090/g' /etc/httpd/conf/httpd.conf
     fi
-
 
 Code Deploy - Cloud watch, Alarm, Trigger:
     Code Deploy -> Deployment groups -> Advanced Option -> Trigger 
@@ -448,20 +443,19 @@ Code Deploy - Deploy to Lambda:
             linear - shifts in equal increment. 
     5. Hooks contains beforeallowtraffic & afterallowtraffic. 
 
-
 -------------------------------------------------------------------------------------------------------------------------------
 
 Code Pipeline: 
     It is CI-CD Orchestrate tool. 
-    Source : S3, Code Commit, ECR, Git hub, Bitbucket. 
-    Build: Code Build, Jenkins
-    Test: 3rd party tools, 
+    Source: S3, Code Commit, ECR, Git hub, Bitbucket. 
+    Build:  Code Build, Jenkins
+    Test:   3rd party tools, 
     Deploy: Code deploy, Cloud formation, Elastic bean stalk, ECS, S3 etc.
 
     It is made up of stages and each stages have sequential or parallel actions. 
     Can have manual approval process. 
     For each stage, generates output artifacts which will pass as input artifacts to next stage. 
-    ATlest 2 stage is mandatory. 
+    Atlest 2 stage is mandatory. 
 
 Code Pipeline - Code Commit & Code Deploy: 
     In source, can select code commit, give the repository and branch details. 
@@ -508,23 +502,20 @@ Code Pipeline - All Integrations:
 
     Deploy -> Cloud formation (Comman use cases) 
 
-
 Code Pipeline - Custom Action jobs with Lambda: 
     https://docs.aws.amazon.com/codepipeline/latest/userguide/actions-invoke-lambda-function.html
 
     1. Created the lambda service role. 
     2. Created the lambda function. 
-    3. In code pipeline, INvoke a lambda function. 
+    3. In code pipeline, Invoke a lambda function. 
 
 Code Pipeline - Cloud Formation: 
     https://docs.aws.amazon.com/codepipeline/latest/userguide/tutorials-cloudformation.html
-
 
 -------------------------------------------------------------------------------------------------------------------------------
 
 Code Star - Overview: 
     Just upload a project and Code star will create the pipeline automatically which includes code commit, code build, code deploy etc depends upon the project. 
-
 
 -------------------------------------------------------------------------------------------------------------------------------
 
@@ -549,7 +540,6 @@ Jenkins - Setup on EC2:
     sudo cat /var/lib/jenkins/secrets/initialAdminPassword
 
     ec2-public-ip-address:8080 port 
-
     
 Jenkis - AWS Plugins: 
     In Jenkins, have different plugins to integrate with AWS like AWS EC2, Code Pipeline etc. 
@@ -599,9 +589,7 @@ Cloud Formation - Status:
     ROLLBACK_COMPLETE 
     ROLLBACK_FAILED 
 
-
 Cloud Formation - Create stacks hands on: 
-
     Cloudformation -> create stack -> S3 URL or Upload template. 
     Tags - Apply to the underlying resources. 
     Permissions - policy 
@@ -612,7 +600,6 @@ Cloud Formation - Create stacks hands on:
     Termination protection 
 
     Estimate cost option. 
-
 
 Cloud Formation - Update and Delete Stack: 
     Modify allow to upload new template or replace existing template. 
@@ -640,7 +627,6 @@ Cloud Formation Parameters:
             Description: Enter t2.micro, m1.small, or m1.large. Default is t2.micro.
             
 Cloud Formation Resources: 
-
     It helps to create the resources. 
     AWS::aws-product-name::data-type-name 
 
@@ -660,7 +646,6 @@ Cloud Formation Resources:
 Cloud Formation Mappings: 
     Used for known value in advance. 
     It is key value pair based. 
-
     !FindInMap[map_name, top_level_key, 2nd_level_key]      -> To retrieve the values from map. 
 
     Mappings: 
@@ -689,7 +674,6 @@ Cloud Formation Mappings:
             HVM64: ami-08569b978cc4dfa10
             HVMG2: ami-0be9df32ae9f92309
                 
-
 Cloud Formation - Outputs: 
     If output is export (export name), then can import in another stack. (!importvalue export-name) 
     It enables cross stack. 
@@ -717,12 +701,12 @@ Cloud Formation Intrinsic Functions:
         Fn::If
         Fn::Not
         Fn::Or
-    Fn::Base64 -> returns base64 representation of input string. used to pass user data. 
-    Fn::Ref or  !Ref   -> In resources, reference the resource ID. In parameters, references the value. 
-    Fn:GetAtt or !GetAtt -> To get the attributes of the resources. 
+    Fn::Base64              -> returns base64 representation of input string. used to pass user data. 
+    Fn::Ref or !Ref         -> In resources, reference the resource ID. In parameters, references the value. 
+    Fn:GetAtt or !GetAtt    -> To get the attributes of the resources. 
     Fn::FindInMap or !FindInMap -> !FindInMap [map-name, top-key, 2nd-key]
-    Fn::Join -> !Join [delimeter, [list of values ]]
-    Fn::Sub ->  substitute 
+    Fn::Join                -> !Join [delimeter, [list of values ]]
+    Fn::Sub                 ->  substitute 
 
 Cloud Formation - User data: 
     It must be under Fn::Base64 
@@ -846,9 +830,8 @@ Cloud Formation - cfn hup and metadata:
 
 Cloud Formation - Stack Policies: 
     It provides fail safe mechanism to prevent accidental deletion. 
-    It helps to prevent update or delee through stack policy. 
+    It helps to prevent update or delete through stack policy. 
     It allow to update but during process failed with error "Action denied by stack policy: Statement [#1] does not allow [Update:*] for resource [*];"
-
 
 -------------------------------------------------------------------------------------------------------------------------------
 
@@ -924,23 +907,23 @@ Elastic Beanstalk - RDS in or out of environment:
         1. Create external table. 
         2. Under EB Configuration -> Use key and value with dynamodb table name. 
 
-Elastic Beanstalk - .ebextions for commands and containers: 
+Elastic Beanstalk - .ebextensions for commands and containers: 
     commands: 
-        run on instance before application setup. 
+        run on instance before application is setup. 
     container_commands: 
         It helps to modify source code. 
-        It runs after application code is extracted and before the application  version deploy. 
+        It runs after application code is extracted and before the application version deploy. 
         It run after application is setup. 
         database_migration: 
             leader_only: true -> to run only on single instance with leader only. 
             
 Elastic Beanstalk - Good Features to know: 
-    CLone Environment - To duplicate the environment. 
-    Rebuild Environment - TO delete and recreate the environment. 
+    Clone Environment - To duplicate the environment. 
+    Rebuild Environment - To delete and recreate the environment. 
     Application -> Settings -> Application version lifecycle settings -> TO limit the no of versions for future deployments. 
 
 Elastic Beanstalk- Rolling update strategy: 
-    Environment -> COnfiguration -> Rolling updates and deployment. 
+    Environment -> Configuration -> Rolling updates and deployment. 
         Deployment Policy: 
             All at once -> Deploy all in one go. Fastest deployment. Downtime. No additional cost. 
             Rolling  -> update few instance at a time. Run below capacity. 
@@ -978,9 +961,7 @@ Elastic Beanstalk - Multi Docker Integration:
         Multi Container Docker: 
             Dockerrun.aws.json file -> Configuration file . 
 
-
 -------------------------------------------------------------------------------------------------------------------------------
-
 
 Lambda: 
     This is serverless. 
@@ -1016,7 +997,6 @@ Step Functions:
     State machine defined using amazon state language. 
     It runs upto one year. 
 
-
 -------------------------------------------------------------------------------------------------------------------------------
 
 API Gateway: 
@@ -1026,7 +1006,7 @@ API Gateway:
 
     Endpoint Type : Regional, Edge Optimized Endpoint (edge location), Private (with vpc)
 
-    Actions -> Create MEthods (GET, PUT etc )
+    Actions -> Create Methods (GET, PUT etc )
 
     Integration Type: 
         Lambda Function 
@@ -1070,7 +1050,6 @@ API Gateway - Throttles:
 API Gateway - Fronting Step Functions: 
     API Gateway -> AWS Services (Step Functions)
 
-
 -------------------------------------------------------------------------------------------------------------------------------
 
 ECS (Elastic Container Service):
@@ -1078,7 +1057,7 @@ ECS (Elastic Container Service):
 Docker: 
     It is used to deploy apps. 
     Package apps in containers which run on any OS under the hood used Linux. 
-    Docker images are stored in Docker Repositories like Docker hub (publlic), ECR (private).
+    Docker images are stored in Docker Repositories like Docker hub (public), ECR (private).
     Docker used docker daemon engine to run the images (container) on same server. 
     Dockerfile used to create docker image. 
 
@@ -1130,11 +1109,10 @@ ECS Task Definition:
             Task Role - Optional IAM role that tasks can use to make API requests to authorized AWS services. Create an Amazon Elastic Container Service Task Role.
             Task execution role - This role is required by tasks to pull container images and publish container logs to Amazon CloudWatch on your behalf.
         
-
 ECS Service: 
     It define how many tasks to run and how to run. 
 
-    Deployment Type: ROlling update & Blue greem powered by code deploy. 
+    Deployment Type: ROlling update & Blue green powered by code deploy. 
     Task Placement: 
         AZ Balanced Spread 
         AZ Balanced Bin pack 
@@ -1188,7 +1166,6 @@ ECS - Cloud Watch Integrations:
 ECS - Code Pipeline - CICD: 
     ecsworkshop.com 
 
-
 ------------------------------------------------------------------------------------------------------------------------------
 
 OpsWorks: 
@@ -1228,7 +1205,6 @@ Life cycle events:
 Auto healing & Cloud watch events: 
     If any failure, it will recreate the instances. 
 
-
 ------------------------------------------------------------------------------------------------------------------------------
                                 MONITORING AND LOGGING
 ------------------------------------------------------------------------------------------------------------------------------
@@ -1253,7 +1229,7 @@ Cloud Trail - Log Integrity:
 
 Cloud Trail - Cross Account Logging: 
     To allow multiple account to send cloud trail logs to S3 bucket. 
-        1. Requires to update the S# bucket policy to allow other account. 
+        1. Requires to update the S3 bucket policy to allow other account. 
         2. In other accounts, choose existing bucket name which created in another account. 
 
 ------------------------------------------------------------------------------------------------------------------------------
@@ -1280,7 +1256,7 @@ Kinesis - Data Streams Overview:
     Kinesis SDK, Agent, Cloud Watch Logs -> Kinesis Stream 
     AWS Kinesis KCL: (Kinesis Client Library): 
         It uses dynamodb to checkpoint offsets. 
-        It uses dynamodb to track other workers and share work amoing shards. 
+        It uses dynamodb to track other workers and share work among shards. 
         great for reading in distributed manner. 
     
 Kinesis Alalytics & Firehose: 
@@ -1293,7 +1269,6 @@ Kinesis Alalytics & Firehose:
         It perform real time analytics using SQL. 
 
     Kinesis -> Kinesis Data Firehose -> Create delivery stream -> Select source, destination
-
 
 ------------------------------------------------------------------------------------------------------------------------------
 
@@ -1312,13 +1287,13 @@ Cloud Watch Metrics:
     Cloud watch -> Metrics 
 
     Cloud watch agent used to get EC2- RAM details. 
-    In EBS, How much space left can get usin cloud watcg agent. 
+    In EBS, How much space left can get using cloud watch agent. 
     In ASG, Group Metrics not enabled by default. 
 
 Cloud Watch Custom Metrics: 
     Standard Resolution     -> Granularity of 1 minute. 
         High Resolution         -> Granularity of 1 sec. 
-        Can publish custom petrics using API or CLI using putmetricdata call. 
+        Can publish custom metrics using API or CLI using putmetricdata call. 
 
         aws cloudwatch put-metric-data --metric-name Buffers --namespace MyNameSpace --unit Bytes --value 231434333 --dimensions InstanceId=1-23456789,InstanceType=m1.small
 
@@ -1348,7 +1323,7 @@ Cloud Watch Alarms:
     In Alarm: 
         Auto scaling actions
         EC2 Action 
-        Systems Manager Action -> Create Incidient or OpsItem 
+        Systems Manager Action -> Create Incident or OpsItem 
 
 Cloud Watch Alarm - Billing Alarm: 
 
@@ -1371,7 +1346,7 @@ Cloud Watch Unified Agent: (Send metrics and logs)
 
     It uses the ssm parameter store to keep the config details. 
 
-Cloud Watch Logs - Metric Filters & ALarms: 
+Cloud Watch Logs - Metric Filters & Alarms: 
     Cloud watch -> Log group -> Create metric filter : 
         Define pattern - like Error , Info etc 
         Assign a metric 
@@ -1391,7 +1366,7 @@ Cloud Watch Events (Amazon event bridge) :
     1. create a rule (Source or schedule)
     2. select a target 
 
-Cloud watch event - INtegration with cloud trail: 
+Cloud watch event - Integration with cloud trail: 
     AWS API Call via Cloud Trail available for all services. 
     Can give our own API call. 
     This helps if some API action is not listed as part of AWS services. 
@@ -1429,7 +1404,6 @@ Amazon ES - ELK (Elastic Search + Kibana + Logstash):
 
 Tagging in AWS:
     Cost tracking, Automation, Security, Organization, 
-
 
 ------------------------------------------------------------------------------------------------------------------------------
                                 POLICIES AND STANDARD AUTOMATION
