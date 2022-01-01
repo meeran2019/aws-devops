@@ -1,0 +1,47 @@
+
+Wait Condition: 
+    It is a resource. 
+    Coordnate a resource creation with actions external to stack then think of wait condition and dependson attribute. 
+
+Creation Policy: 
+    It is a attribute. 
+    Only Auto scaling group, Ec2 Instance, Wait condition resources supoprt creation policy. 
+    creation of ec2 instance, auto scaling group then use creation policy. 
+
+update_rollback_failed: 
+    When cloudformation cant rollback changes during update. 
+    If resources was modified/deleted outside of cloudformation. 
+
+Elastic Load Balancer: 
+
+    SurgeQueueLength - backend system are not able to process as fast as request received. 
+    SpilloverCount - Missed request to process. 
+
+EC2 Instances: 
+
+    CPUUtilization 
+    StatusCheckFailed - System status check & Instance status check 
+    CPUCreditUsage - no of CPU credit spent. 
+    CPUCreditBalance - no of CPU credits that instance has accrued. 
+
+Network: 
+
+    NetworkIn
+    NetworkOut 
+
+I/O: 
+
+    DiskRead 
+    DiskWrite 
+
+Custom: 
+
+    Application specific metric 
+
+Autoscaling Group: 
+
+    Min and Max group size. 
+    Desired capacity 
+
+
+

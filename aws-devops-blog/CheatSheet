@@ -1,0 +1,26 @@
+
+MIME    -> Multipurpose Internet Mail Extensions. 
+Highly Available - Multi AZ 
+High Available + Fault Tolerant - Multi master nodes across multi AZ. 
+AWS_RISK_CREDENTIALS_EXPOSED - Is captured by Personal Health Dashboard. 
+
+Trusted Advisor     -   CPU usage on EC2 (Low/High utilization)
+Inspector           -   EC2 securities vulnerability. 
+Guardduty           -   Malicious activity on ENTIRE AWS 
+Personal Health Dashboard - RISK_CREDENTIALS_EXPOSED 
+Inventory           -   Get metadata from instances. 
+
+Application Load Balancer: 
+
+    Access logs are enabled at ALB level. 
+    Route 53 -> ALB -> 2 ASG (Blue green deployment)
+    Health check for ALB works at HTTP status code level. 
+
+API Gateway: 
+
+    
+Auto Scaling Group: 
+
+    Termination protection prevents users from termination but not by ASG. 
+    Standby is part of ASG, no replacement instance is created. 
+    
