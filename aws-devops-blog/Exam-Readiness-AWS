@@ -43,5 +43,9 @@ Autoscaling Group:
     Min and Max group size. 
     Desired capacity 
 
+Multi AZ vs Multi Region 
+EBS - Cross region snapshot. 
+Fan out - SNS -> SQS 
+RDS read replica - asynch 
 
 

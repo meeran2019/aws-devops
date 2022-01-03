@@ -84,6 +84,15 @@ The s3-bucket-public-read-prohibited and s3-bucket-public-write-prohibited are A
 
 A patch group is an optional means of organizing instances for patching. For example, you can create patch groups for different operating systems (Linux or Windows), different environments (Development, Test, and Production), or different server functions (web servers, file servers, databases). Patch groups can help you avoid deploying patches to the wrong set of instances. They can also help you avoid deploying patches before they have been adequately tested.
 
+ SNS topics when directly integrated with Config can only be used to stream all the notifications and configuration changes and NOT selectively for a given rule.
+
+ Amazon Aurora Global Database is designed for globally distributed applications, allowing a single Amazon Aurora database to span multiple AWS regions.
+
+Access log is optional feature in ELB, that is disabled by default. 
+
+As CloudTrail sends a notification each time a log file is written to the Amazon S3 bucket, an account that's very active can generate a large number of notifications. If you subscribe using email or SMS, you can end up receiving more messages than you can handle. AWS recommends that you subscribe using Amazon Simple Queue Service (Amazon SQS), which lets you handle notifications programmatically.
+
+Which status represents a failure state in AWS CloudFormation? -> ROLLBACK_FAILURE 
 
 
 

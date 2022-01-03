@@ -1,0 +1,57 @@
+
+Amazon EC2 Autoscaling: 
+
+    In Target tracking, metrics like CPU utilization or request count. 
+    When EC2 Auto Scaling is launching or terminating the EC2 instances in an EC2 Auto Scaling group? -> can configure to use SNS notification. 
+    Launch configuration cant modify after created. 
+    Autoscaling group is REGION specific. 
+    Deploy to ASG using Code deploy or Cloud formation. 
+    Data is not automatically copied and requires life cycle hooks to copy data or use RDS read replicas. 
+    Launch hook can be used to to invoke Lambda function -> Run Command.
+    ELB health check is preferred if using ELB else EC2 health check. 
+    Stateful instances means instances have data on it. 
+
+Amazon ECR (Elastic Container Registry): 
+
+    It is a REGIONAL service. 
+    It has both public and private repositories. 
+    Cloud trail is used to check who pulled the image, which ec2 instances pulled image. 
+    AWS Privatelink endpoints to be used to access within VPC. 
+    Amazon ECR replicate images across multi regions and accounts. 
+    For enhanced image scanning, use Amazon inspector. 
+    For broad range of operating system vulnerabilities, enable scanning option in ECR. (ECR -> Images -> Scan) 
+
+Amazon ECS (Elastic Container Service): 
+
+    Docker is the only container platform supported. 
+    PHA & HPAA complaint if executed BAA (Business Associate Addendum) with AWS. 
+
+ELB (Elastic Load Balancing): 
+
+    Gateway Load balancer - To deploy and run third party virtual appliances. 
+    Can access ELB from VPC using VPC endpoints (private link). 
+    HTTP/2 is supported in ALB over TLS. 
+    Network load balancer supports Privatelink and Static IP. NLB -> ALB -> EC2.
+    1 - 65535 TCP ports available. 
+    ALB supports websockets and secure websockets. 
+    Request tracing is enabled by default on ALB. 
+    aws elb describe-load-balancers - classic 
+    aws elbv2 describe-load-balancers - ALB 
+    Cannot convert one load balancer to another. 
+    For layer 4 features, use network load balance. 
+    Add listener in port 80 for HTTP, port 443 for HTTPS. 
+    in ALB, can terminate the HTTPS connection. Must install SSL certificate which used for descryption and send decrypted message to target.
+    SSL certificates get by using AWS Certificate Manager or IAM. 
+    Server Name Indication helps to select the certificate, if multiple host for the same IP address. 
+    ALB + WAF -> To secure from web attacks. 
+    LCU (Loada balancer capacity unit) - how much to pay for ALB. 
+
+    In NLB, TCP+UDP supports on same port 53. 
+    NLB preserves the source IP of the client. 
+
+    
+
+
+
+
+
