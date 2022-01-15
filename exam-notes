@@ -109,8 +109,18 @@ AWS Config rule has 2 triggers:
 
 aws.health API is used to detect AWS_RISK_CREDENTIALS_EXPOSED but not aws personal health dashboard. 
 
+AWS Config require EC2 to be installed and run on that EC2. 
 
+AWS Config is enabled acorss all regions using Cloudformation stacksets. 
 
+Use cases of AWS Config: 
+    Detect EBS volumes without encryption. 
+    Detect configuration changes like change in IAM policies. 
+    Detect EC2 instances of specific tenancy like Dedicated hosts. 
+    Detect VPC configuration changes like Flowlogs, NAT gateways etc. 
+    Detect if EC2 instances have elastic IP address attached. 
+
+Application Discovery service - Gathers on-prem data. 
 
 
 
