@@ -1072,7 +1072,7 @@ Docker:
         EKS 
 
 ECS Clusters: 
-    It is logical grouping of EC2 instances. 
+    It is logical grouping of EC2 instances.
     EC2 instances run the ECS agent (Docker Container) 
     ECS agent register the instance to clusters. 
 
@@ -1112,7 +1112,7 @@ ECS Task Definition:
 ECS Service: 
     It define how many tasks to run and how to run. 
 
-    Deployment Type: ROlling update & Blue green powered by code deploy. 
+    Deployment Type: Rolling update & Blue green powered by code deploy. 
     Task Placement: 
         AZ Balanced Spread 
         AZ Balanced Bin pack 

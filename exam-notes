@@ -94,6 +94,24 @@ As CloudTrail sends a notification each time a log file is written to the Amazon
 
 Which status represents a failure state in AWS CloudFormation? -> ROLLBACK_FAILURE 
 
+Opswork service is primarily used for deployment and not for applying patches or upgrading operating systems. 
+
+Amazon Trusted Advisor is integrated with Cloud watch Events and Cloudwatch services: 
+    Events used to detect changes in status of trusted advisor check. 
+    Cloud watch used trusted advisor alarm to check metrics on status change, resource status change and service limit utuilization. 
+
+AWS Config cannot detect utuilization of AWS resources. 
+
+AWS Config rule has 2 triggers: 
+    Configuration 
+    Periodic 
+    Cloudtrail-enabled rule available only in periodic and startlogging and stoplogging API used. 
+
+aws.health API is used to detect AWS_RISK_CREDENTIALS_EXPOSED but not aws personal health dashboard. 
+
+
+
+
 
 
 
