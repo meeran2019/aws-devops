@@ -48,6 +48,8 @@ https://docs.aws.amazon.com/codecommit/latest/userguide/how-to-notify-lambda.htm
 
 https://docs.aws.amazon.com/codecommit/latest/userguide/how-to-migrate-repository-existing.html
 
+        git clone --mirror 
+
 --------------------------------------------------------------------------------------------------------------------------------
 
 CodeBuild
@@ -68,6 +70,8 @@ https://aws.amazon.com/blogs/devops/validating-aws-codecommit-pull-requests-with
 CodeDeploy
 
 https://docs.aws.amazon.com/codedeploy/latest/APIReference/API_MinimumHealthyHosts.html
+
+        Minimumhealthhost- Hostcount & Fleetpercentage 
 
 https://docs.aws.amazon.com/codedeploy/latest/userguide/reference-appspec-file-structure-hooks.html
 
@@ -240,6 +244,8 @@ https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-log-file-v
 
 https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-receive-logs-from-multiple-accounts.html
 
+    Create bucket in another account and use that account bucket. 
+
 https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-sharing-logs.html
 
 CloudWatch:
@@ -265,6 +271,10 @@ X-Ray:
 https://docs.aws.amazon.com/xray/latest/devguide/aws-xray.html
 
 https://aws.amazon.com/blogs/devops/using-amazon-cloudwatch-and-amazon-sns-to-notify-when-aws-x-ray-detects-elevated-levels-of-latency-errors-and-faults-in-your-application/
+
+
+    Cloudwatch event -> Lambda (Get servicegraph from xray) -> Cloudwatch event -> SNS & Cloudwatch logs. 
+
 
 Amazon ES:
 
@@ -309,6 +319,11 @@ https://aws.amazon.com/about-aws/whats-new/2018/03/aws-config-notifications-are-
 
 https://docs.aws.amazon.com/config/latest/developerguide/monitor-config-with-cloudwatchevents.html
 
+    Relationship between resources - To find the list of resources using security group. 
+    To receive a notification whenever resource is created, modified, deleted. 
+    Receive historical configuration and configuration of resources. 
+
+
 https://docs.aws.amazon.com/config/latest/developerguide/notifications-for-AWS-Config.html
 
 https://docs.aws.amazon.com/config/latest/developerguide/aggregate-data.html
@@ -319,9 +334,18 @@ AWS Inspector
 
 https://aws.amazon.com/about-aws/whats-new/2017/07/amazon-inspector-adds-event-triggers-to-automatically-run-assessments/
 
+    Cloudwatch events -> Inspector 
+
 https://aws.amazon.com/blogs/security/how-to-remediate-amazon-inspector-security-findings-automatically/
 
+    EC2 (Install SSM + Inspector agent) 
+    Assessment template have SNS and add the SNS topics. 
+
+    Template -> SNS -> Lambda 
+
 https://aws.amazon.com/blogs/security/how-to-set-up-continuous-golden-ami-vulnerability-assessments-with-amazon-inspector/
+
+    CLoudwatch events -> Lambda (create ec2) -> Inspector -> SNS -> Lambda (analyze findings)
 
 https://d1.awsstatic.com/whitepapers/aws-building-ami-factory-process-using-ec2-ssm-marketplace-and-service-catalog.pdf
 
@@ -335,19 +359,35 @@ https://status.aws.amazon.com/
 
 https://github.com/aws/aws-health-tools/tree/master/automated-actions/AWS_RISK_CREDENTIALS_EXPOSED
 
+    IAM Access key exposed ->  Cloudwatch events -> Health -> Step functions (IAM, Trail, SNS) 
+
 
 
 AWS Trusted Advisor
 
 https://docs.aws.amazon.com/awssupport/latest/user/cloudwatch-events-ta.html
 
+    Cloudwatch event -> Trusted advisor (source) -> Lambda -> Lambda pass notification to slack channel. 
+    Cloudwatch event -> Trusted advisor (source) -> Kinesis Stream 
+
 https://github.com/aws/Trusted-Advisor-Tools
+
+    Cloudwatch events -> Trusted advisor (source) -> Lambda   -> To detect and stop the low utilization ec2. 
+
 
 https://github.com/aws/Trusted-Advisor-Tools/tree/master/ExposedAccessKeys
 
+    IAM Access key exposed -> Trusted advisor (source) -> Cloudwatch events -> Step functions (IAM, Cloud trail, SNS)
+
 https://github.com/aws/Trusted-Advisor-Tools/tree/master/HighUtilizationEC2Instances
 
+    Trusted advisor (high utilization) -> CLoud watch events -> Lambda -> SSM Automation document -> SNS (approval) -> EC2 instance. 
+
 https://docs.aws.amazon.com/awssupport/latest/user/cloudwatch-metrics-ta.html
+
+    Trusted advisor can react based on cloud watch events or cloudwatch logs. 
+    Trusted advisor metrics can be used to create alarm. 
+
 
 https://aws.amazon.com/premiumsupport/technology/trusted-advisor/
 
@@ -358,6 +398,9 @@ https://docs.aws.amazon.com/cli/latest/reference/support/index.html#cli-aws-supp
 AWS Macie
 
 https://aws.amazon.com/blogs/security/classify-sensitive-data-in-your-environment-using-amazon-macie/
+
+    Macie Alerts - Predictive (Machine learning), Basic (Rule based)
+    It helps to find unencrpted credential uploaded to s3 bucket. 
 
 
 
@@ -370,6 +413,12 @@ Auto Scaling
 https://gist.github.com/mikepfeiffer/d27f5c478bef92e8aff4241154b77e54
 
 https://aws.amazon.com/about-aws/whats-new/2018/05/application-load-balancer-announces-slow-start-support/
+
+    ALB supoprts slow start mode. 
+    It helps to warmup the target before full load. 
+    Period can be 30 sec to 15 mins. 
+    ALB sends the load linearly to target group. 
+
 
 http://docs.aws.amazon.com/autoscaling/latest/userguide/as-suspend-resume-processes.html
 
@@ -385,11 +434,22 @@ https://aws.amazon.com/blogs/devops/use-a-creationpolicy-to-wait-for-on-instance
 
 https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-updatepolicy.html
 
+    If both autoscalingreplacingupdate and autoscalingrollingupdate policy is maintained, then will_replace=true gives rollingupdate the highest preference. 
+    Autoscalingscheduledaction policy applied when scheduled action is maintained. 
+    Minsuccessfulinstancepercent value set to greaterthan zero. 
+
+
 https://aws.amazon.com/premiumsupport/knowledge-center/auto-scaling-group-rolling-updates/
+
+    Waitonresourcesignals - false and pausetime. 
+    During rollingupdate, with ELB, except launch,terminate and addtoloadbalancer, suspend other process. 
 
 https://docs.aws.amazon.com/codedeploy/latest/userguide/tutorials-auto-scaling-group-create-deployment.html
 
 https://docs.aws.amazon.com/codedeploy/latest/userguide/integrations-aws-auto-scaling.html
+
+    Can suspend ASG while deploying by using HANDLE_PROCS=true for oneatatime deployment policy. 
+
 
 https://d1.awsstatic.com/whitepapers/AWS_Blue_Green_Deployments.pdf
 
@@ -399,14 +459,27 @@ DynamoDB
 
 https://aws.amazon.com/blogs/database/choosing-the-right-dynamodb-partition-key/
 
+    
+
 https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/AppendixSampleTables.html#AppendixSampleData.Thread
 
 https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.html#Streams.Processing
 
+    Amazon kinesis adaptor is recommended way to consume dynamodb stream. 
+    Dynamodb stream works same ways as kinesis stream. 
+    Kinesis Client Library used to stream the data. 
+
+
 https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/time-to-live-ttl-how-to.html
+
+    Dynamodb -> Additional settings -> Enable TTL -> TTL attribute field. 
+    This TTL attribute used as column field to enter the expiry time. 
+
 
 https://aws.amazon.com/blogs/big-data/building-and-maintaining-an-amazon-s3-metadata-index-without-servers/
 
+    To store S3 index metadata in dynamodb. 
+    Data -> S3 (put object) -> Lambda -> Dynamodb. 
 
 
 Multi-AZ
@@ -419,51 +492,100 @@ Multi-Region
 
 https://docs.aws.amazon.com/config/latest/developerguide/aggregate-data.html
 
+    Config aggregator collects information from multiple account or region or organization. 
+    Individual accounts aggregator - Policy to be added separately. 
+    Organization aggregator - Policy is added in SCP. 
+    Can include individual accounts or Organization accounts and region. 
+    Enable button to include the FUTURE region where config is enabled. 
+
+
 https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/stacksets-getting-started.html
+
+    AWS Config enabled by using Stackset in other regions. 
+    Cloudformation -> Stacksets -> Can select list of account or AWS Organization accounts. 
+    Then can select list of regions to deploy. 
+
 
 https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/stacksets-prereqs.html
 
+    Cloudformation Stacksets helps to run at cross account or cross region. 
+    Cloudformation should be enabled in that source and target region. 
+
 https://docs.aws.amazon.com/codepipeline/latest/userguide/actions-create-cross-region.html
+
+    Cross region Pipeline not supported for Source actions, Third party actions, Custom actions. 
+    
 
 https://aws.amazon.com/blogs/devops/using-aws-codepipeline-to-perform-multi-region-deployments/
 
+    Code Pipeline -> Source S3, Code Deploy (Created multiple parallel actions to deploy in multiple region)
+    code pipeline copies the artifact in other local region and process the deployment. 
+    S3 Version ID is same across the region. 
 
 
 Disaster Recovery
 
 https://docs.aws.amazon.com/efs/latest/ug/efs-backup-solutions.html
+    
+    AWS Backup - Simple and AWS service. 
+    EFS to EFS -> Cloudwatch -> Lambda -> EC2 
 
 https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/hosted-zones-migrating.html
 
-https://stackoverflow.com/questions/20337749/exporting-dns-zonefile-from-amazon-route-53
+    aws route53 list-resource-record-sets 
+
 
 https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/environment-configuration-methods-before.html#configuration-options-before-savedconfig
 
 https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/environment-configuration-savedconfig.html
 
+    Saved configuration can use to load new environment or update existing environment. 
+
+
 On-Premise
 
 https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/amazon-linux-2-virtual-machine.html
 
+ Linux 2 VM image is developed for Vmware, KVM, virtual box, Microsoft hyper V used for on-prem development and testing. 
+
 https://aws.amazon.com/application-discovery/
+
+    It helps to gather information from on-prem servers. It collects and presents configuration, usage and behaviour data from servers. Data also available in Migration hub. It helps to know "Total Cost of Ownership". 
+
 
 Multi-Account
 
 https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CrossAccountSubscriptions.html
 
+    Source Kinesis -> Logs put-destination -> Target stream 
+
 https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CreateDestination.html
 
+    PutSubscriptionFilter - API 
+
 https://aws.amazon.com/premiumsupport/knowledge-center/streaming-cloudwatch-logs/
+
+    Source Kinesis -> Logs put-destination -> Target stream 
 
 https://aws.amazon.com/blogs/architecture/stream-amazon-cloudwatch-logs-to-a-centralized-account-for-audit-and-analysis/
 
-https://aws.amazon.com/blogs/architecture/stream-amazon-cloudwatch-logs-to-a-centralized-account-for-audit-and-analysis/
+    Source Kinesis -> Logs put-destination -> Target stream (Firehose) -> S3 bucket 
 
 https://aws.amazon.com/premiumsupport/knowledge-center/streaming-cloudwatch-logs/
+
+    Source kinesis stream 
+    Destination kinesis stream (in another account or region)
+    aws logs put-destination - target arn to be destination stream. 
+    Source Kinesis -> Logs put-destination -> Target stream 
 
 https://aws.amazon.com/about-aws/whats-new/2017/06/cloudwatch-events-adds-cross-account-event-delivery-support/
 
+    Default Event bus is created for the account. Using this can select the target as different account ot region to share the events. 
+
 https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/CloudWatchEvents-CrossAccountEventDelivery.html
+
+        Event Bridge -> Rules -> Target (Event Bus in Another account or Another region  & Event bus in same account and region. 
+        It requires sender have access and receiver account have access to allow to receive from sender. 
 
 
 --------------------------------------------------------------------------------------------------------------------------------

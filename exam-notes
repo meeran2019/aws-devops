@@ -100,7 +100,7 @@ Amazon Trusted Advisor is integrated with Cloud watch Events and Cloudwatch serv
     Events used to detect changes in status of trusted advisor check. 
     Cloud watch used trusted advisor alarm to check metrics on status change, resource status change and service limit utuilization. 
 
-AWS Config cannot detect utuilization of AWS resources. 
+AWS Config cannot detect utilization of AWS resources. 
 
 AWS Config rule has 2 triggers: 
     Configuration 
@@ -121,6 +121,19 @@ Use cases of AWS Config:
     Detect if EC2 instances have elastic IP address attached. 
 
 Application Discovery service - Gathers on-prem data. 
+
+For ALB, health checks works based on HTTP status code. 
+Route 53 health checks, based on DNS records. It cannot be used to route to specific instance behind load balancer. 
+In ASG, moved to standby state after launch. 
+To copy AMI from one account to another - Use SSM Automation document + Stackset. 
+Unified Cloudwatch log agent is used for streaming logs from EC2. 
+To send logs from container ECS , requires awslogs driver in task definition and IAMrole to create stream and put log. 
+In AWS COnfig, SNS used for streaming configuration changes. For single rule, use cloudwatch events. 
+Use S3 events to trigger lambda. 
+CNAME swap feature is not supported by cloudformation. Use Custom resource with lambda to process. 
+AMI ID can be created using SSM Automation document. TO share with other account use SSM automation document alone. To copy other account require SSM document + Cloudformation stacksets. 
+SSM patch manager - non security patch. Patch baseline + Run command runpatchbaseline - for security patches. 
+Quick sight/Athena can create on top of S3 but not cloudwatch dashboard. 
 
 
 
